@@ -1,7 +1,12 @@
+import Styles from "Styles";
+import Header from "Components/Header";
+
 const App = () => {
 	return (
 		<div className="App">
-			<header />
+			<Styles>
+				<Header />
+			</Styles>
 		</div>
 	);
 };
