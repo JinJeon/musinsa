@@ -8,7 +8,7 @@ const fonts = {
 		'font-weight': '400',
 	},
 	small: {
-		'font-size': '0.7rem',
+		'font-size': '0.8rem',
 		'font-weight': '200',
 	},
 	bold: {

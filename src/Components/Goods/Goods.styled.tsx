@@ -19,6 +19,7 @@ export const StyledGoodsInfo = styled.div`
 export const StyledGoodsName = styled.div`
 	${({ theme: { fonts } }) => css`
 		${fonts.bold};
+		height: 2rem;
 		margin-top: 0.8rem;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -34,10 +35,25 @@ export const StyledBrandName = styled.div`
 	`}
 `;
 
-export const StyledGoodsPriceWrapper = styled.div``;
+export const StyledGoodsPriceWrapper = styled.div`
+	${({ theme: { fonts, colors } }) => css`
+		${fonts.bold};
+		display: flex;
+		justify-content: space-between;
+		margin-top: 0.8rem;
+
+		> :nth-child(2) {
+			color: ${colors.red};
+		}
+	`}
+`;
 
 export const StyledGoodsOriginPrice = styled.div`
-	${({ theme: { colors } }) => css`
+	${({ theme: { colors, fonts } }) => css`
+		${fonts.bold};
+		${fonts.small};
 		color: ${colors.grey6};
+		margin-top: 0.1rem;
+		text-decoration: line-through;
 	`}
 `;
