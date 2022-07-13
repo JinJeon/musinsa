@@ -13,7 +13,21 @@ export const StyledGoodsImg = styled.img`
 `;
 
 export const StyledGoodsInfo = styled.div`
-	margin: 1.4rem 0.7rem;
+	padding: 1.4rem 0.7rem;
+`;
+
+export const StyledExclusiveLogo = styled.div`
+	${({ theme: { colors, fonts } }) => css`
+		${fonts.bold};
+		${fonts.small};
+		position: absolute;
+		padding: 0.5rem 0.5rem;
+		margin-top: calc(0rem - 1.4rem - 0.5rem - 0.5rem);
+		// 1.4rem = StyledGoodsInfo padding, 0.5rem = self padding top, 0.5rem = self font size
+		display: flex;
+		background-color: ${colors.green};
+		color: ${colors.white};
+	`}
 `;
 
 export const StyledGoodsName = styled.div`

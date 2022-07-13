@@ -8,6 +8,7 @@ import {
 	StyledGoods,
 	StyledGoodsImg,
 	StyledGoodsInfo,
+	StyledExclusiveLogo,
 	StyledBrandName,
 	StyledGoodsName,
 	StyledGoodsPriceWrapper,
@@ -18,8 +19,18 @@ type TGoodsProps = {
 	goodsData: TGoods;
 };
 
+const EXCLUSIVE = '단독';
+
 const Goods = ({
-	goodsData: { goodsName, imageUrl, brandName, price, saleRate, isSale },
+	goodsData: {
+		goodsName,
+		imageUrl,
+		brandName,
+		price,
+		saleRate,
+		isSale,
+		isExclusive,
+	},
 }: TGoodsProps) => {
 	const [goodsImg, setGoodsImg] = useState(emptyImg);
 	const resultPrice = isSale
@@ -41,6 +52,7 @@ const Goods = ({
 		<StyledGoods>
 			<StyledGoodsImg src={goodsImg} alt="goodsImg" />
 			<StyledGoodsInfo>
+				{isExclusive && <StyledExclusiveLogo>{EXCLUSIVE}</StyledExclusiveLogo>}
 				<StyledBrandName>{brandName}</StyledBrandName>
 				<StyledGoodsName>{goodsName}</StyledGoodsName>
 				<StyledGoodsPriceWrapper>
