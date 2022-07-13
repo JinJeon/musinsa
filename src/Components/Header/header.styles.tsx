@@ -1,4 +1,3 @@
-import logo from 'static/images/musinsa-logo.jpeg';
 import styled, { css } from 'styled-components';
 
 export const StyledHeader = styled.div`
@@ -16,10 +15,7 @@ export const StyledHeaderLogoWrapper = styled.header`
 	align-items: center;
 `;
 
-export const StyledHeaderLogo = styled.img.attrs({
-	src: `${logo}`,
-	alt: 'logo',
-})`
+export const StyledHeaderLogo = styled.img`
 	width: 25%;
 `;
 

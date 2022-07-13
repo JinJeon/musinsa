@@ -1,3 +1,4 @@
+import logo from 'static/images/musinsa-logo.jpeg';
 import Button, { TypeButtonPropsInfo } from 'Components/Button';
 import {
 	StyledHeader,
@@ -21,7 +22,7 @@ const Header = () => {
 	return (
 		<StyledHeader>
 			<StyledHeaderLogoWrapper>
-				<StyledHeaderLogo />
+				<StyledHeaderLogo src={logo} alt="logo" />
 			</StyledHeaderLogoWrapper>
 			<StyledHeaderButtons>{buttons}</StyledHeaderButtons>
 		</StyledHeader>
