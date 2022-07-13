@@ -34,6 +34,9 @@ const Normalize = createGlobalStyle`
 			max-width: 700px;
 			min-width: 350px;
 			margin: 0 auto;
+			display: flex;
+			flex-direction: column;
+			gap: 0.5rem;
 		}
 	`}
 `;
