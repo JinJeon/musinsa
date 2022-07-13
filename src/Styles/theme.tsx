@@ -1,3 +1,14 @@
+const defaultFontSize = '16px';
+
+const fonts = {
+	main: {
+		'font-family': 'AppleR',
+		'font-style': 'normal',
+		'font-size': defaultFontSize,
+		'font-weight': '200',
+	},
+};
+
 const colors = {
 	white: '#FFFFFF',
 	grey1: '#F9F9F9',
@@ -13,16 +24,7 @@ const colors = {
 	background: '#F5F5F5',
 };
 
-const fonts = {
-	main: {
-		'font-family': 'AppleR',
-		'font-style': 'normal',
-		'font-size': '18px',
-		'font-weight': '200',
-	},
-};
-
-const theme = { colors, fonts };
+const theme = { defaultFontSize, fonts, colors };
 
 type TTheme = typeof theme;
 type TKeysFonts = keyof typeof fonts;

@@ -1,9 +1,16 @@
 import { createGlobalStyle, css } from 'styled-components';
 
 const Normalize = createGlobalStyle`
-	${({ theme: { fonts, colors } }) => css`
-		body {
+	${({ theme: { fonts, colors, defaultFontSize } }) => css`
+		html {
+			font-size: ${defaultFontSize};
+		}
+
+		* {
 			${fonts.main};
+		}
+
+		body {
 			background-color: ${colors.background};
 			width: 100vw;
 			height: 100vh;
@@ -11,6 +18,10 @@ const Normalize = createGlobalStyle`
 
 		div {
 			box-sizing: border-box;
+		}
+
+		button {
+			cursor: pointer;
 		}
 
 		#root {
