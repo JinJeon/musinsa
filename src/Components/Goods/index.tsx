@@ -30,6 +30,8 @@ const Goods = ({
 		saleRate,
 		isSale,
 		isExclusive,
+		linkUrl,
+		brandLinkUrl,
 	},
 }: TGoodsProps) => {
 	const [goodsImg, setGoodsImg] = useState(emptyImg);
@@ -44,17 +46,29 @@ const Goods = ({
 		if (imgStatus === 200) setGoodsImg(imageUrl);
 	};
 
+	const handleClickLink = (link: string) => {
+		window.location.href = link;
+	};
+
 	useEffect(() => {
 		fetchImg();
 	}, []);
 
 	return (
 		<StyledGoods>
-			<StyledGoodsImg src={goodsImg} alt="goodsImg" />
+			<StyledGoodsImg
+				src={goodsImg}
+				alt="goodsImg"
+				onClick={() => handleClickLink(linkUrl)}
+			/>
 			<StyledGoodsInfo>
 				{isExclusive && <StyledExclusiveLogo>{EXCLUSIVE}</StyledExclusiveLogo>}
-				<StyledBrandName>{brandName}</StyledBrandName>
-				<StyledGoodsName>{goodsName}</StyledGoodsName>
+				<StyledBrandName onClick={() => handleClickLink(brandLinkUrl)}>
+					{brandName}
+				</StyledBrandName>
+				<StyledGoodsName onClick={() => handleClickLink(linkUrl)}>
+					{goodsName}
+				</StyledGoodsName>
 				<StyledGoodsPriceWrapper>
 					<div>{showedPrice}</div>
 					{isSale && <div>{saleRate}%</div>}

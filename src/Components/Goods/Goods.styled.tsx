@@ -10,6 +10,7 @@ export const StyledGoods = styled.div`
 export const StyledGoodsImg = styled.img`
 	width: 100%;
 	aspect-ratio: 5 / 6;
+	cursor: pointer;
 `;
 
 export const StyledGoodsInfo = styled.div`
@@ -33,6 +34,7 @@ export const StyledExclusiveLogo = styled.div`
 export const StyledGoodsName = styled.div`
 	${({ theme: { fonts } }) => css`
 		${fonts.bold};
+		cursor: pointer;
 		height: 2rem;
 		margin-top: 0.8rem;
 		overflow: hidden;
@@ -46,6 +48,7 @@ export const StyledGoodsName = styled.div`
 export const StyledBrandName = styled.div`
 	${({ theme: { fonts } }) => css`
 		${fonts.small};
+		cursor: pointer;
 	`}
 `;
 

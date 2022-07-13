@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from 'styled-components';
 
 /* http://meyerweb.com/eric/tools/css/reset/ 
 v2.0 | 20110126
@@ -66,6 +66,7 @@ const Reset = createGlobalStyle`
   }
 
   a {
+    all: reset;
     :link { color: inherit; text-decoration: none;}
     :visited { color: inherit; text-decoration: none;}
     :hover { color: inherit; text-decoration: none;}
