@@ -5,6 +5,10 @@ const fonts = {
 		'font-family': 'AppleR',
 		'font-style': 'normal',
 		'font-size': defaultFontSize,
+		'font-weight': '400',
+	},
+	small: {
+		'font-size': '0.7rem',
 		'font-weight': '200',
 	},
 };

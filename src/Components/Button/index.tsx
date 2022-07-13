@@ -1,12 +1,16 @@
 import icons, { TypeIcons } from 'static/icons';
 import StyledButton from './Button.styled';
 
-type TypeButtonProps = {
+type TypeButtonPropsInfo = {
 	content: string;
 	icon?: TypeIcons;
 };
 
-const Button = ({ content, icon }: TypeButtonProps) => {
+type TypeButtonProps = {
+	info: TypeButtonPropsInfo;
+};
+
+const Button = ({ info: { content, icon } }: TypeButtonProps) => {
 	return (
 		<StyledButton>
 			{content}
@@ -16,3 +20,4 @@ const Button = ({ content, icon }: TypeButtonProps) => {
 };
 
 export default Button;
+export type { TypeButtonPropsInfo };
