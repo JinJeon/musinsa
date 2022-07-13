@@ -1,5 +1,11 @@
+import { StyledHeader, StyledHeaderLogo } from './header.styles';
+
 const Header = () => {
-	return <div>MUSINSA</div>;
+	return (
+		<StyledHeader>
+			<StyledHeaderLogo />
+		</StyledHeader>
+	);
 };
 
 export default Header;
