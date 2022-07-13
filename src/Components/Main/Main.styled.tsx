@@ -1,10 +1,14 @@
 import styled, { css } from 'styled-components';
 
-const StyledMain = styled.main`
+export const StyledMain = styled.main`
 	${({ theme: { colors } }) => css`
 		background-color: ${colors.white};
-		flex-grow: 1;
+		flex: 1;
 	`}
 `;
 
-export default StyledMain;
+export const StyledGoodsList = styled.div`
+	width: 100%;
+	display: flex;
+	flex-flow: wrap;
+`;

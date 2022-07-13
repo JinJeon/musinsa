@@ -11,6 +11,12 @@ const fonts = {
 		'font-size': '0.7rem',
 		'font-weight': '200',
 	},
+	bold: {
+		'font-family': 'AppleB',
+		'font-style': 'normal',
+		'font-size': defaultFontSize,
+		'font-weight': '400',
+	},
 };
 
 const colors = {
