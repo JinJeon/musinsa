@@ -1,11 +1,16 @@
 import styled, { css } from 'styled-components';
 
-export const StyledHeader = styled.div`
+export const StyledHeaderWrapper = styled.div`
 	${({ theme: { colors } }) => css`
 		background-color: ${colors.white};
-		width: 100%;
-		padding: 0.5rem;
+		position: sticky;
+		top: 0;
+		z-index: 2;
 	`}
+`;
+
+export const StyledHeader = styled.header`
+	padding: 0.5rem;
 `;
 
 export const StyledHeaderLogoWrapper = styled.header`

@@ -8,16 +8,21 @@ const Normalize = createGlobalStyle`
 
 		* {
 			${fonts.main};
+			box-sizing: border-box;
 		}
 
 		body {
 			background-color: ${colors.background};
 			width: 100vw;
-			height: 100vh;
 		}
 
-		div {
-			box-sizing: border-box;
+		header,
+		main {
+			background-color: ${colors.white};
+			margin: 0 auto;
+			width: 100%;
+			max-width: 700px;
+			min-width: 350px;
 		}
 
 		button {
@@ -30,13 +35,11 @@ const Normalize = createGlobalStyle`
 
 		.App {
 			width: 100%;
-			height: 100%;
-			max-width: 700px;
-			min-width: 350px;
+			height: auto;
 			margin: 0 auto;
 			display: flex;
 			flex-direction: column;
-			gap: 0.5rem;
+			gap: 1rem;
 		}
 	`}
 `;
