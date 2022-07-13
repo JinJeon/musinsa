@@ -13,7 +13,6 @@ export const StyledGoodsImg = styled.img`
 `;
 
 export const StyledGoodsInfo = styled.div`
-	width: 100%;
 	margin: 1.4rem 0.7rem;
 `;
 
@@ -21,6 +20,11 @@ export const StyledGoodsName = styled.div`
 	${({ theme: { fonts } }) => css`
 		${fonts.bold};
 		margin-top: 0.8rem;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
 	`}
 `;
 
