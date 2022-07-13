@@ -1,4 +1,5 @@
 import Styles from 'Styles';
+import { GoodsProvider } from 'Context';
 import Header from 'Components/Header';
 import Main from 'Components/Main';
 
@@ -7,7 +8,9 @@ const App = () => {
 		<div className="App">
 			<Styles>
 				<Header />
-				<Main />
+				<GoodsProvider>
+					<Main />
+				</GoodsProvider>
 			</Styles>
 		</div>
 	);
