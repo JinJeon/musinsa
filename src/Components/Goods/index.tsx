@@ -6,7 +6,9 @@ import emptyImg from 'static/images/empty.jpg';
 import { TGoods } from 'Context';
 import {
 	StyledGoods,
+	StyledGoodsImgWrapper,
 	StyledGoodsImg,
+	StyledSoldOutLabel,
 	StyledGoodsInfo,
 	StyledExclusiveLogo,
 	StyledBrandName,
@@ -20,6 +22,7 @@ type TGoodsProps = {
 };
 
 const EXCLUSIVE = '단독';
+const SOLD_OUT = 'SOLD OUT';
 
 const Goods = ({
 	goodsData: {
@@ -28,6 +31,7 @@ const Goods = ({
 		brandName,
 		price,
 		saleRate,
+		isSoldOut,
 		isSale,
 		isExclusive,
 		linkUrl,
@@ -56,11 +60,10 @@ const Goods = ({
 
 	return (
 		<StyledGoods>
-			<StyledGoodsImg
-				src={goodsImg}
-				alt="goodsImg"
-				onClick={() => handleClickLink(linkUrl)}
-			/>
+			<StyledGoodsImgWrapper onClick={() => handleClickLink(linkUrl)}>
+				{isSoldOut && <StyledSoldOutLabel>{SOLD_OUT}</StyledSoldOutLabel>}
+				<StyledGoodsImg src={goodsImg} alt="goodsImg" isSoldOut={isSoldOut} />
+			</StyledGoodsImgWrapper>
 			<StyledGoodsInfo>
 				{isExclusive && <StyledExclusiveLogo>{EXCLUSIVE}</StyledExclusiveLogo>}
 				<StyledBrandName onClick={() => handleClickLink(brandLinkUrl)}>

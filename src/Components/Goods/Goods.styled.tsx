@@ -7,10 +7,35 @@ export const StyledGoods = styled.div`
 	`}
 `;
 
-export const StyledGoodsImg = styled.img`
+export const StyledGoodsImgWrapper = styled.div`
+	position: relative;
+	cursor: pointer;
+`;
+
+export const StyledSoldOutLabel = styled.div`
+	${({ theme: { colors, fonts } }) => css`
+		${fonts.bold};
+		${fonts.medium};
+		color: ${colors.grey7};
+		position: absolute;
+		display: flex;
+		width: 100%;
+		height: 100%;
+		align-items: center;
+		justify-content: center;
+		z-index: 2;
+	`}
+`;
+
+export const StyledGoodsImg = styled.img<{ isSoldOut: boolean }>`
+	${({ isSoldOut }) =>
+		isSoldOut &&
+		css`
+			opacity: 0.3;
+		`}
+
 	width: 100%;
 	aspect-ratio: 5 / 6;
-	cursor: pointer;
 `;
 
 export const StyledGoodsInfo = styled.div`

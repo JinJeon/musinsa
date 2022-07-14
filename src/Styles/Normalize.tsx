@@ -7,7 +7,7 @@ const Normalize = createGlobalStyle`
 		}
 
 		* {
-			${fonts.main};
+			${fonts.regular};
 			box-sizing: border-box;
 		}
 

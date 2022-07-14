@@ -5,7 +5,7 @@ export const StyledHeaderWrapper = styled.div`
 		background-color: ${colors.white};
 		position: sticky;
 		top: 0;
-		z-index: 2;
+		z-index: 3;
 	`}
 `;
 
