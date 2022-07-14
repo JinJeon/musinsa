@@ -14,8 +14,8 @@ const StyledButton = styled.button`
 		}
 
 		svg {
-			width: ${fonts.main['font-size']};
-			height: ${fonts.main['font-size']};
+			width: ${fonts.regular['font-size']};
+			height: ${fonts.regular['font-size']};
 		}
 	`}
 `;

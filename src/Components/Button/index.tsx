@@ -2,6 +2,7 @@ import icons, { TypeIcons } from 'static/icons';
 import StyledButton from './Button.styled';
 
 type TypeButtonPropsInfo = {
+	id: number;
 	content: string;
 	icon?: TypeIcons;
 };

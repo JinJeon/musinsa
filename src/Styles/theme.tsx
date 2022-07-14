@@ -1,15 +1,25 @@
 const defaultFontSize = '16px';
 
 const fonts = {
-	main: {
+	regular: {
 		'font-family': 'AppleR',
 		'font-style': 'normal',
 		'font-size': defaultFontSize,
 		'font-weight': '400',
 	},
+	bold: {
+		'font-family': 'AppleB',
+		'font-style': 'normal',
+		'font-size': defaultFontSize,
+		'font-weight': '400',
+	},
 	small: {
-		'font-size': '0.7rem',
-		'font-weight': '200',
+		'font-size': '0.8rem',
+		'font-weight': '400',
+	},
+	medium: {
+		'font-size': '1.2rem',
+		'font-weight': '400',
 	},
 };
 

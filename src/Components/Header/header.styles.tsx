@@ -1,12 +1,16 @@
-import logo from 'static/images/musinsa-logo.jpeg';
 import styled, { css } from 'styled-components';
 
-export const StyledHeader = styled.div`
+export const StyledHeaderWrapper = styled.div`
 	${({ theme: { colors } }) => css`
 		background-color: ${colors.white};
-		width: 100%;
-		padding: 0.5rem;
+		position: sticky;
+		top: 0;
+		z-index: 3;
 	`}
+`;
+
+export const StyledHeader = styled.header`
+	padding: 0.5rem;
 `;
 
 export const StyledHeaderLogoWrapper = styled.header`
@@ -16,10 +20,7 @@ export const StyledHeaderLogoWrapper = styled.header`
 	align-items: center;
 `;
 
-export const StyledHeaderLogo = styled.img.attrs({
-	src: `${logo}`,
-	alt: 'logo',
-})`
+export const StyledHeaderLogo = styled.img`
 	width: 25%;
 `;
 
