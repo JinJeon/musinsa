@@ -13,7 +13,7 @@ export const StyledHeader = styled.header`
 	padding: 0.5rem;
 `;
 
-export const StyledHeaderLogoWrapper = styled.header`
+export const StyledHeaderLogoWrapper = styled.div`
 	width: 100%;
 	display: flex;
 	justify-content: center;

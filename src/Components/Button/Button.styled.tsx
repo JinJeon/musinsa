@@ -41,9 +41,14 @@ const StyledButton = styled.button<TStyledButtonProps>`
 		css`
 			border-color: ${colors.blue};
 			color: ${colors.blue};
+			opacity: 0.7;
 
 			path {
 				fill: ${colors.blue};
+			}
+
+			:hover {
+				opacity: 1;
 			}
 		`}
 
