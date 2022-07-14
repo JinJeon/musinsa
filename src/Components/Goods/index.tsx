@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import api from 'Api';
 import emptyImg from 'static/images/empty.jpg';
 import { getPriceType, getDiscountedPrice } from 'Util';
-import { TGoods } from 'Context';
+import { TGoods } from 'Context/GoodsContext';
 import {
 	StyledGoods,
 	StyledGoodsImgWrapper,

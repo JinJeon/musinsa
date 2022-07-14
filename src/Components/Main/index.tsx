@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { GoodsContext } from 'Context';
+import { GoodsContext } from 'Context/GoodsContext';
 import icons from 'static/icons';
 import Goods from 'Components/Goods';
 import { StyledMain, StyledGoodsList, StyledEmptyResult } from './Main.styled';

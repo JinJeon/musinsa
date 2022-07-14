@@ -1,5 +1,5 @@
 import Styles from 'Styles';
-import { GoodsProvider } from 'Context';
+import { GoodsProvider } from 'Context/GoodsContext';
 import Header from 'Components/Header';
 import Main from 'Components/Main';
 
