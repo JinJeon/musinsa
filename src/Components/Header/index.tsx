@@ -2,22 +2,22 @@ import logo from 'static/images/musinsa-logo.jpeg';
 
 import HeaderOptions from './HeaderOptions';
 import {
-	StyledHeaderWrapper,
 	StyledHeader,
+	StyledHeaderContent,
 	StyledHeaderLogoWrapper,
 	StyledHeaderLogo,
 } from './header.styles';
 
 const Header = () => {
 	return (
-		<StyledHeaderWrapper>
-			<StyledHeader>
+		<StyledHeader>
+			<StyledHeaderContent>
 				<StyledHeaderLogoWrapper>
 					<StyledHeaderLogo src={logo} alt="logo" />
 				</StyledHeaderLogoWrapper>
 				<HeaderOptions />
-			</StyledHeader>
-		</StyledHeaderWrapper>
+			</StyledHeaderContent>
+		</StyledHeader>
 	);
 };
 

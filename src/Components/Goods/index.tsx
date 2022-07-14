@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
 import api from 'Api';
-import { getPriceType, getDiscountedPrice } from 'Util';
 import emptyImg from 'static/images/empty.jpg';
+import { getPriceType, getDiscountedPrice } from 'Util';
 import { TGoods } from 'Context';
 import {
 	StyledGoods,

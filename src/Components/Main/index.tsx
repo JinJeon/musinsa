@@ -1,8 +1,12 @@
 import { useContext } from 'react';
 
 import { GoodsContext } from 'Context';
+import icons from 'static/icons';
 import Goods from 'Components/Goods';
-import { StyledMain, StyledGoodsList } from './Main.styled';
+import { StyledMain, StyledGoodsList, StyledEmptyResult } from './Main.styled';
+
+const EMPTY_RESULT = '검색 결과 없음';
+const { warning } = icons;
 
 const Main = () => {
 	const goodsDataList = useContext(GoodsContext);
@@ -10,10 +14,14 @@ const Main = () => {
 	const goodsList = goodsDataList.map((goodsData) => (
 		<Goods key={goodsData.goodsNo} goodsData={goodsData} />
 	));
+
 	const mainContent = isGoods ? (
 		<StyledGoodsList>{goodsList}</StyledGoodsList>
 	) : (
-		'LOADING'
+		<StyledEmptyResult>
+			{warning}
+			{EMPTY_RESULT}
+		</StyledEmptyResult>
 	);
 
 	return <StyledMain>{mainContent}</StyledMain>;
