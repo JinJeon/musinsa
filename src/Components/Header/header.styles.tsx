@@ -23,9 +23,3 @@ export const StyledHeaderLogoWrapper = styled.header`
 export const StyledHeaderLogo = styled.img`
 	width: 25%;
 `;
-
-export const StyledHeaderButtons = styled.div`
-	margin-top: 0.4rem;
-	display: flex;
-	gap: 0.2rem;
-`;

@@ -45,13 +45,13 @@ const Goods = ({
 	const showedPrice = getPriceType({ price: resultPrice, isUnit: true });
 	const showedOriginPrice = getPriceType({ price, isUnit: true });
 
+	const handleClickLink = (link: string) => {
+		window.location.href = link;
+	};
+
 	const fetchImg = async () => {
 		const imgStatus = await api.imageApi.getImageStatus(imageUrl);
 		if (imgStatus === 200) setGoodsImg(imageUrl);
-	};
-
-	const handleClickLink = (link: string) => {
-		window.location.href = link;
 	};
 
 	useEffect(() => {
