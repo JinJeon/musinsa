@@ -3,8 +3,8 @@ import React, { ReactNode, createContext, useReducer } from 'react';
 type TFilter = 'SALE' | 'EXCLUSIVE' | 'SOLDOUT';
 
 type TFilters = {
-	options: TFilter[];
-	words: string[];
+	options: Set<TFilter>;
+	words: Set<string>;
 };
 
 type TReducerAction =
@@ -29,27 +29,34 @@ type TReducerAction =
 			content: string;
 	  };
 
-const defaultFilters: TFilters = { options: [], words: [] };
+const defaultFilters: TFilters = { options: new Set(), words: new Set() };
 
 const reducer = (filters: TFilters, action: TReducerAction): TFilters => {
 	const { type, content } = action;
 	const { options, words } = filters;
+
+	const newOptions = new Set(options);
+	const newWords = new Set(words);
 
 	switch (type) {
 		case 'RESET':
 			return defaultFilters;
 
 		case 'ADD_OPTION':
-			return { options: [...options, content], words };
+			newOptions.add(content);
+			return { options: newOptions, words };
 
 		case 'ADD_WORD':
-			return { options, words: [...words, content] };
+			newWords.add(content);
+			return { options, words: newWords };
 
 		case 'REMOVE_OPTION':
-			return { options: options.filter((option) => option !== content), words };
+			newOptions.delete(content);
+			return { options: newOptions, words };
 
 		case 'REMOVE_WORD':
-			return { options, words: words.filter((word) => word !== content) };
+			newWords.delete(content);
+			return { options, words: newWords };
 
 		default:
 			return { ...filters };
@@ -74,3 +81,4 @@ const FilterProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export { FilterProvider, FiltersContext, FiltersDispatchContext };
+export type { TFilter };
