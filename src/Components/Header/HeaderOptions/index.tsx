@@ -1,42 +1,80 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 
+import {
+	FiltersContext,
+	FiltersDispatchContext,
+	TFilter,
+} from 'Context/FiltersContext';
 import SearchBar from 'Components/SearchBar';
 import Button, { TButtonPropsInfo } from 'Components/Button';
-import StyledHeaderButtons from './HeaderOptions.styled';
+import {
+	StyledHeaderOptions,
+	StyledFilterBtns,
+	StyledSelectedFilter,
+} from './HeaderOptions.styled';
 
-const filterButtonsInfos: TButtonPropsInfo[] = [
+type TFilterButtonInfo = {
+	id: number;
+	content: TFilter;
+};
+
+const filterBtnsInfos: TFilterButtonInfo[] = [
 	{ id: 1, content: '세일상품' },
 	{ id: 2, content: '단독상품' },
 	{ id: 3, content: '품절포함' },
 ];
-const searchButtonInfo: TButtonPropsInfo = {
-	id: 0,
+const searchBtnInfo: TButtonPropsInfo = {
 	content: '검색',
 	icon: 'search' as const,
 };
 
 const HeaderOptions = () => {
 	const [isSearching, setIsSearching] = useState(false);
-	const filterButtons = filterButtonsInfos.map((info) => (
-		<Button key={info.id} info={info} />
-	));
+	const filters = useContext(FiltersContext);
+	const filtersDispatch = useContext(FiltersDispatchContext);
+
+	const handleClickFilterButton = (option: TFilter) => {
+		const isOption = filters.options.has(option);
+		const type = isOption ? 'REMOVE_OPTION' : 'ADD_OPTION';
+		filtersDispatch({ type, content: option });
+	};
 
 	const handleClickSearchBtn = () => {
 		setIsSearching(!isSearching);
 	};
 
+	const filterBtns = filterBtnsInfos.map(({ content, id }) => (
+		<Button
+			key={id}
+			info={{ content }}
+			clickHandler={() => handleClickFilterButton(content)}
+		/>
+	));
+
+	const seletedFilterOptions = Array.from(filters.options).map((option) => (
+		<Button info={{ content: option }} />
+	));
+
+	const seletedFilterWords = Array.from(filters.words).map((word) => (
+		<Button info={{ content: word }} />
+	));
+
 	return (
-		<>
-			<StyledHeaderButtons>
+		<StyledHeaderOptions>
+			<StyledFilterBtns>
 				<Button
-					info={searchButtonInfo}
+					info={searchBtnInfo}
 					isActive={isSearching}
 					clickHandler={handleClickSearchBtn}
 				/>
-				{filterButtons}
-			</StyledHeaderButtons>
+				{filterBtns}
+			</StyledFilterBtns>
 			{isSearching && <SearchBar />}
-		</>
+			<StyledSelectedFilter>
+				{seletedFilterOptions}
+				{seletedFilterWords}
+			</StyledSelectedFilter>
+		</StyledHeaderOptions>
 	);
 };
 

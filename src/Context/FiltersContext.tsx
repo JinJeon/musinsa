@@ -1,6 +1,6 @@
 import React, { ReactNode, createContext, useReducer } from 'react';
 
-type TFilter = 'SALE' | 'EXCLUSIVE' | 'SOLDOUT';
+type TFilter = '세일상품' | '단독상품' | '품절포함';
 
 type TFilters = {
 	options: Set<TFilter>;

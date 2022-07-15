@@ -5,7 +5,6 @@ export const StyledSearchBarForm = styled.form`
 		display: flex;
 		gap: 0.3rem;
 		align-items: center;
-		margin-top: 0.6rem;
 		padding: 0.3rem 0.4rem;
 		border: solid 1px ${colors.grey5};
 		border-radius: 1rem;
