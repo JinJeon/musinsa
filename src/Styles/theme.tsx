@@ -17,6 +17,10 @@ const fonts = {
 		'font-size': defaultFontSize,
 		'font-weight': '400',
 	},
+	xSmall: {
+		'font-size': '0.6rem',
+		'font-weight': '400',
+	},
 	small: {
 		'font-size': '0.8rem',
 		'font-weight': '400',

@@ -46,6 +46,21 @@ const icons = {
 			/>
 		</svg>
 	),
+	close: (
+		<svg
+			width="14"
+			height="14"
+			viewBox="0 0 14 14"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<path
+				fillRule="evenodd"
+				clipRule="evenodd"
+				d="M6.30221 7L2.99998 3.69776L3.69774 3L6.99998 6.30224L10.3022 3L11 3.69776L7.69774 7L11 10.3022L10.3022 11L6.99998 7.69776L3.69774 11L2.99998 10.3022L6.30221 7Z"
+			/>
+		</svg>
+	),
 };
 
 type TypeIcons = keyof typeof icons;

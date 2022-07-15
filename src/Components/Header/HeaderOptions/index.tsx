@@ -7,11 +7,8 @@ import {
 } from 'Context/FiltersContext';
 import SearchBar from 'Components/SearchBar';
 import Button, { TButtonPropsInfo } from 'Components/Button';
-import {
-	StyledHeaderOptions,
-	StyledFilterBtns,
-	StyledSelectedFilter,
-} from './HeaderOptions.styled';
+import SelectedFilterBtns from './SelectedFilterBtns';
+import { StyledHeaderOptions, StyledFilterBtns } from './HeaderOptions.styled';
 
 type TFilterButtonInfo = {
 	id: number;
@@ -33,14 +30,14 @@ const HeaderOptions = () => {
 	const filters = useContext(FiltersContext);
 	const filtersDispatch = useContext(FiltersDispatchContext);
 
+	const handleClickSearchBtn = () => {
+		setIsSearching(!isSearching);
+	};
+
 	const handleClickFilterButton = (option: TFilter) => {
 		const isOption = filters.options.has(option);
 		const type = isOption ? 'REMOVE_OPTION' : 'ADD_OPTION';
 		filtersDispatch({ type, content: option });
-	};
-
-	const handleClickSearchBtn = () => {
-		setIsSearching(!isSearching);
 	};
 
 	const filterBtns = filterBtnsInfos.map(({ content, id }) => (
@@ -49,14 +46,6 @@ const HeaderOptions = () => {
 			info={{ content }}
 			clickHandler={() => handleClickFilterButton(content)}
 		/>
-	));
-
-	const seletedFilterOptions = Array.from(filters.options).map((option) => (
-		<Button info={{ content: option }} />
-	));
-
-	const seletedFilterWords = Array.from(filters.words).map((word) => (
-		<Button info={{ content: word }} />
 	));
 
 	return (
@@ -70,10 +59,7 @@ const HeaderOptions = () => {
 				{filterBtns}
 			</StyledFilterBtns>
 			{isSearching && <SearchBar />}
-			<StyledSelectedFilter>
-				{seletedFilterOptions}
-				{seletedFilterWords}
-			</StyledSelectedFilter>
+			<SelectedFilterBtns />
 		</StyledHeaderOptions>
 	);
 };
