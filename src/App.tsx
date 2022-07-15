@@ -1,6 +1,5 @@
 import Styles from 'Styles';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { GoodsProvider } from 'Context/GoodsContext';
 import { FilterProvider } from 'Context/FiltersContext';
 import Header from 'Components/Header';
 import Main from 'Components/Main';
@@ -14,9 +13,7 @@ const App = () => {
 				<QueryClientProvider client={queryClient}>
 					<FilterProvider>
 						<Header />
-						<GoodsProvider>
-							<Main />
-						</GoodsProvider>
+						<Main />
 					</FilterProvider>
 				</QueryClientProvider>
 			</Styles>
