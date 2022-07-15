@@ -13,6 +13,8 @@ const SearchBar = () => {
 
 	const handleSubmitSearchBar = (event: React.FormEvent) => {
 		event.preventDefault();
+		if (!inputValue.length) return;
+
 		filtersDispatch({ type: 'ADD_WORD', content: inputValue });
 		setInputValue('');
 	};
