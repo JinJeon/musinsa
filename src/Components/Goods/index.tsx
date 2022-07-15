@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, MutableRefObject } from 'react';
 
 import api from 'Api';
 import emptyImg from 'static/images/empty.jpg';
@@ -19,6 +19,7 @@ import {
 
 type TGoodsProps = {
 	goodsData: TGoods;
+	lastRef: MutableRefObject<null> | null;
 };
 
 const EXCLUSIVE = '단독';
@@ -37,6 +38,7 @@ const Goods = ({
 		linkUrl,
 		brandLinkUrl,
 	},
+	lastRef,
 }: TGoodsProps) => {
 	const [goodsImg, setGoodsImg] = useState(emptyImg);
 	const resultPrice = isSale
@@ -59,7 +61,7 @@ const Goods = ({
 	}, []);
 
 	return (
-		<StyledGoods>
+		<StyledGoods ref={lastRef}>
 			<StyledGoodsImgWrapper onClick={() => handleClickLink(linkUrl)}>
 				{isSoldOut && <StyledSoldOutLabel>{SOLD_OUT}</StyledSoldOutLabel>}
 				<StyledGoodsImg src={goodsImg} alt="goodsImg" isSoldOut={isSoldOut} />

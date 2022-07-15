@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useRef } from 'react';
 
 import { FiltersContext } from 'Context/FiltersContext';
 import useGoods, { TGoods } from 'Hooks/useGoods';
@@ -10,9 +10,10 @@ const EMPTY_RESULT = '검색 결과 없음';
 const ERROR_RESULT = '상품을 불러오지 못함';
 
 const Main = () => {
-	const { goodsDataList, isError, isSuccess } = useGoods(1);
+	const BottomRef = useRef(null);
+	const [page, setPage] = useState(0);
+	const { goodsDataList, isError, isSuccess } = useGoods(page);
 	const [mainContent, setMainContent] = useState(<Notification />);
-
 	const { options } = useContext(FiltersContext);
 
 	const filterWithOptions = (goodsData: TGoods) => {
@@ -37,9 +38,16 @@ const Main = () => {
 			return;
 		}
 
-		const goodsList = filteredGoodsDataList.map((goodsData) => (
-			<Goods key={goodsData.goodsNo} goodsData={goodsData} />
-		));
+		const goodsList = filteredGoodsDataList.map((goodsData, index, array) => {
+			const lastRef = index === array.length - 1 ? BottomRef : null;
+			return (
+				<Goods
+					key={goodsData.goodsNo}
+					goodsData={goodsData}
+					lastRef={lastRef}
+				/>
+			);
+		});
 		const goodsListComponent = <StyledGoodsList>{goodsList}</StyledGoodsList>;
 		setMainContent(goodsListComponent);
 	};
@@ -53,6 +61,20 @@ const Main = () => {
 		if (!isError) return;
 		setMainContent(<Notification mention={ERROR_RESULT} icon="warning" />);
 	}, [isError]);
+
+	useEffect(() => {
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				if (entry.isIntersecting) setPage(page + 1);
+			},
+			{
+				threshold: 0.3,
+			}
+		);
+		if (BottomRef.current) observer.observe(BottomRef.current);
+
+		return () => observer.disconnect();
+	}, [mainContent]);
 
 	return <StyledMain>{mainContent}</StyledMain>;
 };
