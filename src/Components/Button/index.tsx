@@ -1,19 +1,33 @@
 import icons, { TypeIcons } from 'static/icons';
 import StyledButton from './Button.styled';
 
-type TypeButtonPropsInfo = {
-	id: number;
+type TButtonPropsInfo = {
 	content: string;
 	icon?: TypeIcons;
 };
 
 type TypeButtonProps = {
-	info: TypeButtonPropsInfo;
+	info: TButtonPropsInfo;
+	shape?: 'round' | 'rect';
+	isSelected?: boolean;
+	isActive?: boolean;
+	clickHandler?: () => void;
 };
 
-const Button = ({ info: { content, icon } }: TypeButtonProps) => {
+const Button = ({
+	info: { content, icon },
+	shape = 'round',
+	isSelected,
+	isActive,
+	clickHandler,
+}: TypeButtonProps) => {
 	return (
-		<StyledButton>
+		<StyledButton
+			shape={shape}
+			isSelected={isSelected}
+			isActive={isActive}
+			onClick={clickHandler}
+		>
 			{content}
 			{icon && icons[icon]}
 		</StyledButton>
@@ -21,4 +35,4 @@ const Button = ({ info: { content, icon } }: TypeButtonProps) => {
 };
 
 export default Button;
-export type { TypeButtonPropsInfo };
+export type { TButtonPropsInfo };

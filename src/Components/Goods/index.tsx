@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
 import api from 'Api';
-import { getPriceType, getDiscountedPrice } from 'Util';
 import emptyImg from 'static/images/empty.jpg';
-import { TGoods } from 'Context';
+import { getPriceType, getDiscountedPrice } from 'Util';
+import { TGoods } from 'Context/GoodsContext';
 import {
 	StyledGoods,
 	StyledGoodsImgWrapper,
@@ -45,13 +45,13 @@ const Goods = ({
 	const showedPrice = getPriceType({ price: resultPrice, isUnit: true });
 	const showedOriginPrice = getPriceType({ price, isUnit: true });
 
+	const handleClickLink = (link: string) => {
+		window.location.href = link;
+	};
+
 	const fetchImg = async () => {
 		const imgStatus = await api.imageApi.getImageStatus(imageUrl);
 		if (imgStatus === 200) setGoodsImg(imageUrl);
-	};
-
-	const handleClickLink = (link: string) => {
-		window.location.href = link;
 	};
 
 	useEffect(() => {

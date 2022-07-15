@@ -31,6 +31,36 @@ const icons = {
 			<g mask="url(#mask0_7_133)" />
 		</svg>
 	),
+	warning: (
+		<svg
+			width="69"
+			height="69"
+			viewBox="0 0 69 69"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<path
+				fillRule="evenodd"
+				clipRule="evenodd"
+				d="M34.5 3C51.385 3 65.21 16.325 65.997 33H69C68.21 14.67 53.041 0 34.5 0C15.959 0 0.79 14.67 0 33H3.003C3.79 16.325 17.615 3 34.5 3ZM33 42V19H36V42H33ZM33 50.443V46H36V50.443H33ZM34.5 66C51.385 66 65.21 52.675 65.997 36H69C68.211 54.33 53.041 69 34.5 69C15.959 69 0.79 54.33 0 36H3.004C3.79 52.675 17.616 66 34.5 66Z"
+			/>
+		</svg>
+	),
+	close: (
+		<svg
+			width="14"
+			height="14"
+			viewBox="0 0 14 14"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<path
+				fillRule="evenodd"
+				clipRule="evenodd"
+				d="M6.30221 7L2.99998 3.69776L3.69774 3L6.99998 6.30224L10.3022 3L11 3.69776L7.69774 7L11 10.3022L10.3022 11L6.99998 7.69776L3.69774 11L2.99998 10.3022L6.30221 7Z"
+			/>
+		</svg>
+	),
 };
 
 type TypeIcons = keyof typeof icons;

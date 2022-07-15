@@ -1,4 +1,8 @@
 const defaultFontSize = '16px';
+const defaultWidth = {
+	'min-width': '350px',
+	'max-width': '700px',
+};
 
 const fonts = {
 	regular: {
@@ -11,6 +15,10 @@ const fonts = {
 		'font-family': 'AppleB',
 		'font-style': 'normal',
 		'font-size': defaultFontSize,
+		'font-weight': '400',
+	},
+	xSmall: {
+		'font-size': '0.6rem',
 		'font-weight': '400',
 	},
 	small: {
@@ -38,7 +46,7 @@ const colors = {
 	background: '#F5F5F5',
 };
 
-const theme = { defaultFontSize, fonts, colors };
+const theme = { defaultFontSize, defaultWidth, fonts, colors };
 
 type TTheme = typeof theme;
 type TKeysFonts = keyof typeof fonts;

@@ -1,16 +1,24 @@
 import Styles from 'Styles';
-import { GoodsProvider } from 'Context';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { GoodsProvider } from 'Context/GoodsContext';
+import { FilterProvider } from 'Context/FiltersContext';
 import Header from 'Components/Header';
 import Main from 'Components/Main';
+
+const queryClient = new QueryClient();
 
 const App = () => {
 	return (
 		<div className="App">
 			<Styles>
-				<Header />
-				<GoodsProvider>
-					<Main />
-				</GoodsProvider>
+				<QueryClientProvider client={queryClient}>
+					<FilterProvider>
+						<Header />
+						<GoodsProvider>
+							<Main />
+						</GoodsProvider>
+					</FilterProvider>
+				</QueryClientProvider>
 			</Styles>
 		</div>
 	);
