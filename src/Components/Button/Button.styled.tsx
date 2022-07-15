@@ -1,41 +1,59 @@
 import styled, { css } from 'styled-components';
 
 type TStyledButtonProps = {
+	shape: 'round' | 'rect';
 	isSelected?: boolean;
 	isActive?: boolean;
 };
 
 const StyledButton = styled.button<TStyledButtonProps>`
-	${({ theme: { colors, fonts }, isSelected, isActive }) => css`
-		${fonts.small};
+	${({ theme: { colors, fonts }, isSelected, isActive, shape }) => css`
 		color: ${colors.grey7};
 		border: solid 1px ${colors.grey4};
-		border-radius: 1rem;
-		padding: 0.4rem 0.8rem;
 		display: flex;
 		align-items: center;
-		gap: 0.2rem;
 
 		path {
 			fill: ${colors.grey7};
 		}
 
-		svg {
-			width: ${fonts.regular['font-size']};
-			height: ${fonts.regular['font-size']};
-		}
+		${shape === 'round' &&
+		css`
+			${fonts.small};
+			border-radius: 1rem;
+			padding: 0.4rem 0.8rem;
+			gap: 0.2rem;
 
-		:hover {
-			${!isActive &&
-			css`
+			svg {
+				width: ${fonts.regular['font-size']};
+				height: ${fonts.regular['font-size']};
+			}
+		`}
+
+		${shape === 'rect' &&
+		css`
+			${fonts.xSmall};
+			border-radius: 0.3rem;
+			padding: 0.3rem 0.5rem;
+			gap: 0.3rem;
+
+			svg {
+				width: ${fonts.small['font-size']};
+				height: ${fonts.small['font-size']};
+			}
+		`}
+
+		${!isActive &&
+		css`
+			:hover {
 				border-color: ${colors.black};
 				color: ${colors.black};
 				font-weight: 700;
 				path {
 					fill: ${colors.black};
 				}
-			`}
-		}
+			}
+		`}
 
 		${isSelected &&
 		css`

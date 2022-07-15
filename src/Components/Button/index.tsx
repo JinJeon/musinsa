@@ -8,6 +8,7 @@ type TButtonPropsInfo = {
 
 type TypeButtonProps = {
 	info: TButtonPropsInfo;
+	shape?: 'round' | 'rect';
 	isSelected?: boolean;
 	isActive?: boolean;
 	clickHandler?: () => void;
@@ -15,12 +16,14 @@ type TypeButtonProps = {
 
 const Button = ({
 	info: { content, icon },
+	shape = 'round',
 	isSelected,
 	isActive,
 	clickHandler,
 }: TypeButtonProps) => {
 	return (
 		<StyledButton
+			shape={shape}
 			isSelected={isSelected}
 			isActive={isActive}
 			onClick={clickHandler}
