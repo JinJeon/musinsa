@@ -1,28 +1,39 @@
-import { useContext } from 'react';
+import { useEffect, useState } from 'react';
 
-import { GoodsContext } from 'Context/GoodsContext';
-import icons from 'static/icons';
+import useGoods from 'Hooks/useGoods';
 import Goods from 'Components/Goods';
-import { StyledMain, StyledGoodsList, StyledEmptyResult } from './Main.styled';
+import Notification from './Notification';
+import { StyledMain, StyledGoodsList } from './Main.styled';
 
 const EMPTY_RESULT = '검색 결과 없음';
-const { warning } = icons;
+const ERROR_RESULT = '상품을 불러오지 못함';
 
 const Main = () => {
-	const goodsDataList = useContext(GoodsContext);
-	const isGoods = goodsDataList.length;
-	const goodsList = goodsDataList.map((goodsData) => (
-		<Goods key={goodsData.goodsNo} goodsData={goodsData} />
-	));
+	const { goodsDataList, isError, isSuccess } = useGoods(0);
+	const [mainContent, setMainContent] = useState(<Notification />);
 
-	const mainContent = isGoods ? (
-		<StyledGoodsList>{goodsList}</StyledGoodsList>
-	) : (
-		<StyledEmptyResult>
-			{warning}
-			{EMPTY_RESULT}
-		</StyledEmptyResult>
-	);
+	const setNewMainContent = () => {
+		const goodsList = goodsDataList.map((goodsData) => (
+			<Goods key={goodsData.goodsNo} goodsData={goodsData} />
+		));
+		const isGoods = goodsDataList.length;
+		const goodsListComponent = <StyledGoodsList>{goodsList}</StyledGoodsList>;
+		const emptyListComponent = (
+			<Notification mention={EMPTY_RESULT} icon="warning" />
+		);
+		const newMainContent = isGoods ? goodsListComponent : emptyListComponent;
+		setMainContent(newMainContent);
+	};
+
+	useEffect(() => {
+		if (!isSuccess) return;
+		setNewMainContent();
+	}, [isSuccess]);
+
+	useEffect(() => {
+		if (!isError) return;
+		setMainContent(<Notification mention={ERROR_RESULT} icon="warning" />);
+	}, [isError]);
 
 	return <StyledMain>{mainContent}</StyledMain>;
 };
