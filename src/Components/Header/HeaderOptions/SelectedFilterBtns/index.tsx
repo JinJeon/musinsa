@@ -4,13 +4,19 @@ import { FiltersContext, FiltersDispatchContext } from 'Context/FiltersContext';
 import Button from 'Components/Button';
 import StyledSelectedFilterBtns from './SelectedFilterBtns.styled';
 
+const filterOptionsContents = {
+	isSale: '세일상품',
+	isExclusive: '단독상품',
+	isSoldOut: '품절포함',
+};
+
 const SelectedFilterBtns = () => {
 	const { options, words } = useContext(FiltersContext);
 	const filtersDispatch = useContext(FiltersDispatchContext);
 
 	const seletedFilterOptions = Array.from(options).map((option) => (
 		<Button
-			info={{ content: option, icon: 'close' }}
+			info={{ content: filterOptionsContents[option], icon: 'close' }}
 			isActive={true}
 			shape="rect"
 			clickHandler={() =>

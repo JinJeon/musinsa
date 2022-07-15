@@ -2,8 +2,10 @@ import React, { ReactNode, createContext, useReducer } from 'react';
 
 type TFilter = '세일상품' | '단독상품' | '품절포함';
 
+type TFilterOption = 'isSale' | 'isExclusive' | 'isSoldOut';
+
 type TFilters = {
-	options: Set<TFilter>;
+	options: Set<TFilterOption>;
 	words: Set<string>;
 };
 
@@ -14,7 +16,7 @@ type TReducerAction =
 	  }
 	| {
 			type: 'ADD_OPTION';
-			content: TFilter;
+			content: TFilterOption;
 	  }
 	| {
 			type: 'ADD_WORD';
@@ -22,7 +24,7 @@ type TReducerAction =
 	  }
 	| {
 			type: 'REMOVE_OPTION';
-			content: TFilter;
+			content: TFilterOption;
 	  }
 	| {
 			type: 'REMOVE_WORD';
@@ -81,4 +83,4 @@ const FilterProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export { FilterProvider, FiltersContext, FiltersDispatchContext };
-export type { TFilter };
+export type { TFilter, TFilterOption };

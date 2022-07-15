@@ -4,6 +4,7 @@ import {
 	FiltersContext,
 	FiltersDispatchContext,
 	TFilter,
+	TFilterOption,
 } from 'Context/FiltersContext';
 import SearchBar from 'Components/SearchBar';
 import Button, { TButtonPropsInfo } from 'Components/Button';
@@ -13,12 +14,13 @@ import { StyledHeaderOptions, StyledFilterBtns } from './HeaderOptions.styled';
 type TFilterButtonInfo = {
 	id: number;
 	content: TFilter;
+	option: TFilterOption;
 };
 
 const filterBtnsInfos: TFilterButtonInfo[] = [
-	{ id: 1, content: '세일상품' },
-	{ id: 2, content: '단독상품' },
-	{ id: 3, content: '품절포함' },
+	{ id: 1, content: '세일상품', option: 'isSale' },
+	{ id: 2, content: '단독상품', option: 'isExclusive' },
+	{ id: 3, content: '품절포함', option: 'isSoldOut' },
 ];
 const searchBtnInfo: TButtonPropsInfo = {
 	content: '검색',
@@ -35,17 +37,17 @@ const HeaderOptions = () => {
 		setIsSearching(!isSearching);
 	};
 
-	const handleClickFilterButton = (option: TFilter) => {
+	const handleClickFilterButton = (option: TFilterOption) => {
 		const isOption = options.has(option);
 		const type = isOption ? 'REMOVE_OPTION' : 'ADD_OPTION';
 		filtersDispatch({ type, content: option });
 	};
 
-	const filterBtns = filterBtnsInfos.map(({ content, id }) => (
+	const filterBtns = filterBtnsInfos.map(({ content, id, option }) => (
 		<Button
 			key={id}
 			info={{ content }}
-			clickHandler={() => handleClickFilterButton(content)}
+			clickHandler={() => handleClickFilterButton(option)}
 		/>
 	));
 
