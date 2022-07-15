@@ -20,7 +20,7 @@ type TFilterButtonInfo = {
 const filterBtnsInfos: TFilterButtonInfo[] = [
 	{ id: 1, content: '세일상품', option: 'isSale' },
 	{ id: 2, content: '단독상품', option: 'isExclusive' },
-	{ id: 3, content: '품절포함', option: 'isSoldOut' },
+	{ id: 3, content: '품절포함', option: 'includeSoldOut' },
 ];
 const searchBtnInfo: TButtonPropsInfo = {
 	content: '검색',

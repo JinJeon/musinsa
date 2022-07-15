@@ -2,7 +2,7 @@ import React, { ReactNode, createContext, useReducer } from 'react';
 
 type TFilter = '세일상품' | '단독상품' | '품절포함';
 
-type TFilterOption = 'isSale' | 'isExclusive' | 'isSoldOut';
+type TFilterOption = 'isSale' | 'isExclusive' | 'includeSoldOut';
 
 type TFilters = {
 	options: Set<TFilterOption>;

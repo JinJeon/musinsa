@@ -7,7 +7,7 @@ import StyledSelectedFilterBtns from './SelectedFilterBtns.styled';
 const filterOptionsContents = {
 	isSale: '세일상품',
 	isExclusive: '단독상품',
-	isSoldOut: '품절포함',
+	includeSoldOut: '품절포함',
 };
 
 const SelectedFilterBtns = () => {
