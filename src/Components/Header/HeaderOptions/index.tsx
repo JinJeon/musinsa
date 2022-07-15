@@ -27,15 +27,16 @@ const searchBtnInfo: TButtonPropsInfo = {
 
 const HeaderOptions = () => {
 	const [isSearching, setIsSearching] = useState(false);
-	const filters = useContext(FiltersContext);
+	const { options, words } = useContext(FiltersContext);
 	const filtersDispatch = useContext(FiltersDispatchContext);
+	const isFilters = !!(options.size || words.size);
 
 	const handleClickSearchBtn = () => {
 		setIsSearching(!isSearching);
 	};
 
 	const handleClickFilterButton = (option: TFilter) => {
-		const isOption = filters.options.has(option);
+		const isOption = options.has(option);
 		const type = isOption ? 'REMOVE_OPTION' : 'ADD_OPTION';
 		filtersDispatch({ type, content: option });
 	};
@@ -59,7 +60,7 @@ const HeaderOptions = () => {
 				{filterBtns}
 			</StyledFilterBtns>
 			{isSearching && <SearchBar />}
-			<SelectedFilterBtns />
+			{isFilters && <SelectedFilterBtns />}
 		</StyledHeaderOptions>
 	);
 };
