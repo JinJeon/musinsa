@@ -8,6 +8,7 @@ export const StyledMain = styled.main`
 		margin: 0 auto;
 		width: 100%;
 		display: flex;
+		flex-direction: column;
 	`}
 `;
 

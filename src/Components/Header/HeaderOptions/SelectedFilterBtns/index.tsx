@@ -16,6 +16,7 @@ const SelectedFilterBtns = () => {
 
 	const seletedFilterOptions = Array.from(options).map((option) => (
 		<Button
+			key={option}
 			info={{ content: filterOptionsContents[option], icon: 'close' }}
 			isActive={true}
 			shape="rect"
@@ -27,6 +28,7 @@ const SelectedFilterBtns = () => {
 
 	const seletedFilterWords = Array.from(words).map((word) => (
 		<Button
+			key={word}
 			info={{ content: word, icon: 'close' }}
 			isActive={true}
 			shape="rect"
