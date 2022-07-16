@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext, useRef, ReactElement } from 'react';
 
 import { FiltersContext, TFilterOption } from 'Context/FiltersContext';
-import { TGoods, useInfiniteGoods } from 'Hooks/useGoods';
+import useInfiniteGoods, { TGoods } from 'Hooks/useGoods';
 import Goods from 'Components/Goods';
 import Notification, { TNotificationProps } from './Notification';
 import { StyledMain, StyledGoodsList, StyledMainNoti } from './Main.styled';

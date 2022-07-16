@@ -16,24 +16,6 @@ type TGoods = {
 	isExclusive: boolean;
 };
 
-const useGoods = (order?: number) => {
-	const baseURL = `https://static.msscdn.net/musinsaUI/homework/data/goods${order}.json`;
-	const client = axios.create({ baseURL });
-
-	const goodsApi = async () => {
-		const { data } = await client.get('');
-		return data;
-	};
-
-	const { isError, isSuccess, data } = useQuery(['goods', order], goodsApi, {
-		retry: 2,
-		refetchOnWindowFocus: false,
-	});
-	const goodsDataList: TGoods[] = data?.data.list;
-
-	return { goodsDataList, isError, isSuccess };
-};
-
 const useInfiniteGoods = () => {
 	const goodsApi = async (order: number) => {
 		const baseURL = `https://static.msscdn.net/musinsaUI/homework/data/goods${order}.json`;
@@ -54,6 +36,5 @@ const useInfiniteGoods = () => {
 	return { goodsDataListPages, isSuccess, isError, fetchNextPage, isFetching };
 };
 
-export default useGoods;
-export { useInfiniteGoods };
+export default useInfiniteGoods;
 export type { TGoods };
