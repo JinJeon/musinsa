@@ -1,7 +1,7 @@
 import { useEffect, useState, MutableRefObject } from 'react';
 
-import api from 'Api';
 import emptyImg from 'static/images/empty.jpg';
+import useImage from 'Hooks/useImage';
 import { getPriceType, getDiscountedPrice } from 'Util';
 import { TGoods } from 'Hooks/useGoods';
 import {
@@ -27,6 +27,7 @@ const SOLD_OUT = 'SOLD OUT';
 
 const Goods = ({
 	goodsData: {
+		goodsNo,
 		goodsName,
 		imageUrl,
 		brandName,
@@ -40,6 +41,7 @@ const Goods = ({
 	},
 	lastRef,
 }: TGoodsProps) => {
+	const { isSuccess, url } = useImage({ goodsNo, imageUrl });
 	const [goodsImg, setGoodsImg] = useState(emptyImg);
 	const resultPrice = isSale
 		? getDiscountedPrice({ price, discountRate: saleRate })
@@ -51,14 +53,9 @@ const Goods = ({
 		window.location.href = link;
 	};
 
-	const fetchImg = async () => {
-		const imgStatus = await api.imageApi.getImageStatus(imageUrl);
-		if (imgStatus === 200) setGoodsImg(imageUrl);
-	};
-
 	useEffect(() => {
-		fetchImg();
-	}, []);
+		if (isSuccess) setGoodsImg(url);
+	}, [isSuccess]);
 
 	return (
 		<StyledGoods ref={lastRef}>
