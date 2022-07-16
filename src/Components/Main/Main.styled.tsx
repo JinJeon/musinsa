@@ -8,6 +8,7 @@ export const StyledMain = styled.main`
 		margin: 0 auto;
 		width: 100%;
 		display: flex;
+		flex-direction: column;
 	`}
 `;
 
@@ -15,4 +16,10 @@ export const StyledGoodsList = styled.div`
 	width: 100%;
 	display: flex;
 	flex-flow: wrap;
+`;
+
+export const StyledMainNoti = styled.div`
+	display: flex;
+	min-height: 5rem;
+	flex-grow: 1;
 `;

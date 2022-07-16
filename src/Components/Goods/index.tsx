@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, MutableRefObject } from 'react';
 
-import api from 'Api';
 import emptyImg from 'static/images/empty.jpg';
+import useImage from 'Hooks/useImage';
 import { getPriceType, getDiscountedPrice } from 'Util';
-import { TGoods } from 'Context/GoodsContext';
+import { TGoods } from 'Hooks/useGoods';
 import {
 	StyledGoods,
 	StyledGoodsImgWrapper,
@@ -19,6 +19,7 @@ import {
 
 type TGoodsProps = {
 	goodsData: TGoods;
+	lastRef: MutableRefObject<null> | null;
 };
 
 const EXCLUSIVE = '단독';
@@ -26,6 +27,7 @@ const SOLD_OUT = 'SOLD OUT';
 
 const Goods = ({
 	goodsData: {
+		goodsNo,
 		goodsName,
 		imageUrl,
 		brandName,
@@ -37,7 +39,9 @@ const Goods = ({
 		linkUrl,
 		brandLinkUrl,
 	},
+	lastRef,
 }: TGoodsProps) => {
+	const { isSuccess, url } = useImage({ goodsNo, imageUrl });
 	const [goodsImg, setGoodsImg] = useState(emptyImg);
 	const resultPrice = isSale
 		? getDiscountedPrice({ price, discountRate: saleRate })
@@ -49,17 +53,12 @@ const Goods = ({
 		window.location.href = link;
 	};
 
-	const fetchImg = async () => {
-		const imgStatus = await api.imageApi.getImageStatus(imageUrl);
-		if (imgStatus === 200) setGoodsImg(imageUrl);
-	};
-
 	useEffect(() => {
-		fetchImg();
-	}, []);
+		if (isSuccess) setGoodsImg(url);
+	}, [isSuccess]);
 
 	return (
-		<StyledGoods>
+		<StyledGoods ref={lastRef}>
 			<StyledGoodsImgWrapper onClick={() => handleClickLink(linkUrl)}>
 				{isSoldOut && <StyledSoldOutLabel>{SOLD_OUT}</StyledSoldOutLabel>}
 				<StyledGoodsImg src={goodsImg} alt="goodsImg" isSoldOut={isSoldOut} />
