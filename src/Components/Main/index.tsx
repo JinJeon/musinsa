@@ -68,9 +68,8 @@ const Main = () => {
 		const filteredGoodsDataList = goodsDataList.filter((goodsData) =>
 			filterWithOptions(goodsData)
 		);
-		const isGoods = filteredGoodsDataList.length;
 
-		if (!isGoods) {
+		if (!filteredGoodsDataList.length) {
 			setNotiType(EMPTY_RESULT);
 			return;
 		}
@@ -85,16 +84,8 @@ const Main = () => {
 		const filteredGoodsDataList = goodsList.filter((goodsData) =>
 			filterWithOptions(goodsData)
 		);
-		console.log(filteredGoodsDataList);
-		const isGoods = filteredGoodsDataList.length;
-
-		if (!isGoods) {
-			setNotiType(EMPTY_RESULT);
-			return;
-		}
 
 		setNewMainContent(filteredGoodsDataList, true);
-		BottomRef.current = null;
 	}, [options]);
 
 	useEffect(() => {
@@ -105,12 +96,12 @@ const Main = () => {
 			{ threshold: 0.3 }
 		);
 		const target = BottomRef.current;
+
 		if (target) observer.observe(target);
+		if (isError) observer.disconnect();
 
 		return () => observer.disconnect();
-	}, [mainContent]);
-
-	console.log(BottomRef);
+	}, [mainContent, isError]);
 
 	return (
 		<StyledMain>
