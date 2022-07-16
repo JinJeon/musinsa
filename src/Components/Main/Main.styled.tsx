@@ -17,3 +17,9 @@ export const StyledGoodsList = styled.div`
 	display: flex;
 	flex-flow: wrap;
 `;
+
+export const StyledMainBottom = styled.div`
+	display: flex;
+	min-height: 5rem;
+	flex-grow: 1;
+`;

@@ -1,116 +1,120 @@
-import { useEffect, useState, useContext, useRef } from 'react';
+import { useEffect, useState, useContext, useRef, ReactElement } from 'react';
 
-import { FiltersContext } from 'Context/FiltersContext';
+import { FiltersContext, TFilterOption } from 'Context/FiltersContext';
 import { TGoods, useInfiniteGoods } from 'Hooks/useGoods';
 import Goods from 'Components/Goods';
-import Notification from './Notification';
-import { StyledMain, StyledGoodsList } from './Main.styled';
+import Notification, { TNotificationProps } from './Notification';
+import { StyledMain, StyledGoodsList, StyledMainBottom } from './Main.styled';
 
-const EMPTY_RESULT = '검색 결과 없음';
-const ERROR_RESULT = '상품을 불러오지 못함';
+type TFilterDataParams = {
+	goodsData: TGoods;
+	options: Set<TFilterOption>;
+};
+
+const EMPTY_RESULT = '검색 결과가 없습니다';
+const ERROR_RESULT = '상품을 불러오지 못했습니다';
+const LAST_PAGE_RESULT = '불러올 상품이 없습니다';
+
+const filterData = ({ goodsData, options }: TFilterDataParams) => {
+	const isOptions = !!options.size;
+	let isFiltered = !goodsData.isSoldOut || options.has('includeSoldOut');
+	if (!isOptions) return isFiltered;
+
+	options.forEach((option) => {
+		if (option === 'includeSoldOut') return;
+		isFiltered = isFiltered && goodsData[option];
+	});
+	return isFiltered;
+};
 
 const Main = () => {
-	const { goodsDataListPages, fetchNextPage, isError } = useInfiniteGoods();
-	const BottomRef = useRef(null);
+	const { goodsDataListPages, fetchNextPage, isError, isFetching } =
+		useInfiniteGoods();
+	const bottomRef = useRef(null);
 	const { options } = useContext(FiltersContext);
-	const [isLast, setIsLast] = useState(false);
-	const [mainContent, setMainContent] = useState([<Notification key={1} />]);
-	const [notiType, setNotiType] = useState<string | undefined>(undefined);
+	const [isNoti, setIsNoti] = useState(false);
+	const [mainContent, setMainContent] = useState<ReactElement[]>([]);
+	const [notiProps, setNotiProps] = useState<TNotificationProps>({
+		mention: undefined,
+		icon: undefined,
+	});
 	const [goodsList, setGoodsList] = useState<TGoods[]>([]);
+	const { mention, icon } = notiProps;
 
-	const filterWithOptions = (goodsData: TGoods) => {
-		const isOptions = !!options.size;
-		let isFiltered = !goodsData.isSoldOut || options.has('includeSoldOut');
-		if (!isOptions) return isFiltered;
-
-		options.forEach((option) => {
-			if (option === 'includeSoldOut') return;
-			isFiltered = isFiltered && goodsData[option];
-		});
-		return isFiltered;
+	const showNoti = (showedNotiProps: TNotificationProps) => {
+		setNotiProps(showedNotiProps);
+		setIsNoti(true);
 	};
 
 	const setNewMainContent = (list: TGoods[], isFiltering: boolean = false) => {
-		let key = 0;
+		const filteredList = list.filter((goodsData) =>
+			filterData({ goodsData, options })
+		);
 
-		const newGoodsList = list.map((goodsData, index, array) => {
-			const lastRef = index === array.length - 1 ? BottomRef : null;
+		if (!filteredList.length) {
+			setMainContent([]);
+			showNoti({ mention: EMPTY_RESULT, icon: 'warning' });
+			return;
+		}
+
+		let key = 0; // 상품 번호가 중복되는 제품들에 대한 키값 처리
+		const newGoodsList = filteredList.map((goodsData, index, array) => {
 			key += 1;
-			return (
-				<Goods
-					key={goodsData.goodsNo + key}
-					goodsData={goodsData}
-					lastRef={lastRef}
-				/>
-			);
+			const goodsKey = goodsData.goodsNo + key;
+			const lastRef = !array[index + 1] ? bottomRef : null;
+
+			return <Goods key={goodsKey} goodsData={goodsData} lastRef={lastRef} />;
 		});
 
+		setIsNoti(false);
 		setMainContent((prevContent) => {
-			const prevList =
-				goodsDataListPages?.length === 1 || isFiltering ? [] : prevContent;
+			const prevList = isFiltering ? [] : prevContent;
 			return [...prevList, ...newGoodsList];
 		});
 	};
 
 	useEffect(() => {
-		if (!isError) return;
-		if (!goodsDataListPages) {
-			setNotiType(ERROR_RESULT);
-			return;
-		}
-		setIsLast(true);
-	}, [isError]);
-
-	useEffect(() => {
 		if (!goodsDataListPages) return;
 
 		const { goodsDataList } = goodsDataListPages[goodsDataListPages.length - 1];
-		const filteredGoodsDataList = goodsDataList.filter((goodsData) =>
-			filterWithOptions(goodsData)
-		);
-
-		if (!filteredGoodsDataList.length) {
-			setNotiType(EMPTY_RESULT);
-			return;
-		}
 
 		setGoodsList((prevGoods) => [...prevGoods, ...goodsDataList]);
-		setNewMainContent(filteredGoodsDataList);
+		setNewMainContent(goodsDataList);
 	}, [goodsDataListPages]);
 
 	useEffect(() => {
-		if (!goodsDataListPages) return;
-
-		const filteredGoodsDataList = goodsList.filter((goodsData) =>
-			filterWithOptions(goodsData)
-		);
-
-		setNewMainContent(filteredGoodsDataList, true);
+		if (goodsDataListPages) setNewMainContent(goodsList, true);
 	}, [options]);
 
 	useEffect(() => {
-		const observer = new IntersectionObserver(
+		const bottomObserver = new IntersectionObserver(
 			([entry]) => {
 				if (entry.isIntersecting) fetchNextPage();
 			},
-			{ threshold: 0.3 }
+			{ threshold: 0.5 }
 		);
-		const target = BottomRef.current;
+		const target = bottomRef.current;
 
-		if (target) observer.observe(target);
-		if (isError) observer.disconnect();
+		if (target) bottomObserver.observe(target);
+		if (isError) bottomObserver.disconnect();
 
-		return () => observer.disconnect();
+		if (isError && goodsDataListPages) showNoti({ mention: LAST_PAGE_RESULT });
+		if (isError && !goodsDataListPages) {
+			showNoti({ mention: ERROR_RESULT, icon: 'warning' });
+		}
+
+		return () => bottomObserver.disconnect();
 	}, [mainContent, isError]);
 
 	return (
 		<StyledMain>
-			{!notiType ? (
-				<StyledGoodsList>{mainContent}</StyledGoodsList>
-			) : (
-				<Notification mention={notiType} icon="warning" />
-			)}
-			{isLast && <div>리스트 끝</div>}
+			<StyledGoodsList>{mainContent}</StyledGoodsList>
+			<StyledMainBottom>
+				{isFetching && <Notification />}
+				{isNoti && !isFetching && (
+					<Notification mention={mention} icon={icon} />
+				)}
+			</StyledMainBottom>
 		</StyledMain>
 	);
 };
