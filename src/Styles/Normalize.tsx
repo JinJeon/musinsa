@@ -26,6 +26,10 @@ const Normalize = createGlobalStyle`
 			gap: 1rem;
 			min-height: 100vh;
 		}
+
+		#first-loading {
+			display: none;
+		}
 	`}
 `;
 
