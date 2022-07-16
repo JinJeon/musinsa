@@ -11,9 +11,10 @@ const Notification = ({ mention, icon }: TNotificationProps) => {
 	const notification = mention ? (
 		[icon && icons[icon], mention]
 	) : (
-		<LoadingAnimation color="grey7" size={60} border={10} />
+		<LoadingAnimation color="grey7" size={50} border={6} />
 	);
 	return <StyledNotification>{notification}</StyledNotification>;
 };
 
 export default Notification;
+export type { TNotificationProps };

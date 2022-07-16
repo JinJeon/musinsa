@@ -4,7 +4,7 @@ import { FiltersContext, TFilterOption } from 'Context/FiltersContext';
 import { TGoods, useInfiniteGoods } from 'Hooks/useGoods';
 import Goods from 'Components/Goods';
 import Notification, { TNotificationProps } from './Notification';
-import { StyledMain, StyledGoodsList, StyledMainBottom } from './Main.styled';
+import { StyledMain, StyledGoodsList, StyledMainNoti } from './Main.styled';
 
 type TFilterDataParams = {
 	goodsData: TGoods;
@@ -109,12 +109,12 @@ const Main = () => {
 	return (
 		<StyledMain>
 			<StyledGoodsList>{mainContent}</StyledGoodsList>
-			<StyledMainBottom>
+			<StyledMainNoti>
 				{isFetching && <Notification />}
 				{isNoti && !isFetching && (
 					<Notification mention={mention} icon={icon} />
 				)}
-			</StyledMainBottom>
+			</StyledMainNoti>
 		</StyledMain>
 	);
 };

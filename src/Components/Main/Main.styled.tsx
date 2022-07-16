@@ -18,7 +18,7 @@ export const StyledGoodsList = styled.div`
 	flex-flow: wrap;
 `;
 
-export const StyledMainBottom = styled.div`
+export const StyledMainNoti = styled.div`
 	display: flex;
 	min-height: 5rem;
 	flex-grow: 1;
