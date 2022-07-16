@@ -1,0 +1,31 @@
+@keyframes spinning {
+	from {
+		transform: rotate(0);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+#first-loading {
+	margin: 0 auto;
+	background-color: white;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	max-width: 700px;
+	min-width: 350px;
+	min-height: 100vh;
+	gap: 30px;
+}
+
+#first-loading-animation {
+	margin: 0 auto;
+	border: solid 8px;
+	border-radius: 50%;
+	border-color: black transparent transparent transparent;
+	width: 60px;
+	height: 60px;
+	animation: spinning 1s infinite;
+}
