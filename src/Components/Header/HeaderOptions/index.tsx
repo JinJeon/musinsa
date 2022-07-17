@@ -47,6 +47,7 @@ const HeaderOptions = () => {
 		<Button
 			key={id}
 			info={{ content }}
+			isSelected={options.has(option)}
 			clickHandler={() => handleClickFilterButton(option)}
 		/>
 	));
