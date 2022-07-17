@@ -9,21 +9,30 @@ import { StyledMain, StyledGoodsList, StyledMainNoti } from './Main.styled';
 type TFilterDataParams = {
 	goodsData: TGoods;
 	options: Set<TFilterOption>;
+	words: Set<string>;
 };
 
 const EMPTY_RESULT = '검색 결과가 없습니다';
 const ERROR_RESULT = '상품을 불러오지 못했습니다';
 const LAST_PAGE_RESULT = '불러올 상품이 없습니다';
 
-const filterData = ({ goodsData, options }: TFilterDataParams) => {
-	const isOptions = !!options.size;
+const filterData = ({ goodsData, options, words }: TFilterDataParams) => {
+	const isFilters = !!options.size || !!words.size;
 	let isFiltered = !goodsData.isSoldOut || options.has('includeSoldOut');
-	if (!isOptions) return isFiltered;
+	if (!isFilters) return isFiltered;
 
 	options.forEach((option) => {
 		if (option === 'includeSoldOut') return;
 		isFiltered = isFiltered && goodsData[option];
 	});
+
+	words.forEach((word) => {
+		const { brandName, goodsName } = goodsData;
+		const isIncludeWord = brandName.includes(word) || goodsName.includes(word);
+		console.log(isIncludeWord);
+		isFiltered = isFiltered && isIncludeWord;
+	});
+
 	return isFiltered;
 };
 
@@ -31,15 +40,13 @@ const Main = () => {
 	const { goodsDataListPages, fetchNextPage, isError, isFetching } =
 		useInfiniteGoods();
 	const bottomRef = useRef(null);
-	const { options } = useContext(FiltersContext);
-	const [curOrder, setCurOrder] = useState<number>();
+	const { options, words } = useContext(FiltersContext);
 	const [isNoti, setIsNoti] = useState(false);
 	const [mainContent, setMainContent] = useState<ReactElement[]>([]);
 	const [notiProps, setNotiProps] = useState<TNotificationProps>({
 		mention: undefined,
 		icon: undefined,
 	});
-	const [goodsList, setGoodsList] = useState<TGoods[]>([]);
 	const { mention, icon } = notiProps;
 
 	const showNoti = (showedNotiProps: TNotificationProps) => {
@@ -47,9 +54,16 @@ const Main = () => {
 		setIsNoti(true);
 	};
 
-	const setNewMainContent = (list: TGoods[], isFiltering: boolean = false) => {
-		const filteredList = list.filter((goodsData) =>
-			filterData({ goodsData, options })
+	const setNewMainContent = () => {
+		if (!goodsDataListPages) return;
+
+		const goodsDataList: TGoods[] = [];
+		goodsDataListPages.forEach((page) =>
+			page.goodsDataList.forEach((data) => goodsDataList.push(data))
+		);
+
+		const filteredList = goodsDataList.filter((goodsData) =>
+			filterData({ goodsData, options, words })
 		);
 
 		if (!filteredList.length) {
@@ -68,27 +82,12 @@ const Main = () => {
 		});
 
 		setIsNoti(false);
-		setMainContent((prevContent) => {
-			const prevList = isFiltering ? [] : prevContent;
-			return [...prevList, ...newGoodsList];
-		});
+		setMainContent(newGoodsList);
 	};
 
 	useEffect(() => {
-		if (!goodsDataListPages) return;
-
-		const { goodsDataList, order } =
-			goodsDataListPages[goodsDataListPages.length - 1];
-		if (order === curOrder) return;
-
-		setCurOrder(order);
-		setGoodsList((prevGoods) => [...prevGoods, ...goodsDataList]);
-		setNewMainContent(goodsDataList);
-	}, [goodsDataListPages]);
-
-	useEffect(() => {
-		if (goodsDataListPages) setNewMainContent(goodsList, true);
-	}, [options]);
+		setNewMainContent();
+	}, [goodsDataListPages, options, words]);
 
 	useEffect(() => {
 		const bottomObserver = new IntersectionObserver(
@@ -102,9 +101,14 @@ const Main = () => {
 		if (target) bottomObserver.observe(target);
 		if (isError) bottomObserver.disconnect();
 
-		if (isError && goodsDataListPages) showNoti({ mention: LAST_PAGE_RESULT });
 		if (isError && !goodsDataListPages) {
 			showNoti({ mention: ERROR_RESULT, icon: 'warning' });
+		}
+		if (isError && goodsDataListPages) {
+			const isFilters = (!!options.size || !!words.size) && !mainContent.length;
+			const newMention = isFilters ? EMPTY_RESULT : LAST_PAGE_RESULT;
+			const newIcon = isFilters ? 'warning' : undefined;
+			showNoti({ mention: newMention, icon: newIcon });
 		}
 
 		return () => bottomObserver.disconnect();
