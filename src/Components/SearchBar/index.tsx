@@ -49,7 +49,7 @@ const checkIsWordIncluded = ({ keywords, word }: TCheckIsKeyword) => {
 const SearchBar = () => {
 	const [inputValue, setInputValue] = useState('');
 	const filtersDispatch = useContext(FiltersDispatchContext);
-	const { goodsDataListPages } = useInfiniteGoods();
+	const { goodsDataListPages } = useInfiniteGoods(false);
 
 	const handleSubmitSearchBar = (event: React.FormEvent) => {
 		event.preventDefault();

@@ -29,7 +29,6 @@ const filterData = ({ goodsData, options, words }: TFilterDataParams) => {
 	words.forEach((word) => {
 		const { brandName, goodsName } = goodsData;
 		const isIncludeWord = brandName.includes(word) || goodsName.includes(word);
-		console.log(isIncludeWord);
 		isFiltered = isFiltered && isIncludeWord;
 	});
 

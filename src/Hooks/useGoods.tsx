@@ -21,7 +21,7 @@ type TGoodsApiParams = {
 	goodsKeywords: Set<string>;
 };
 
-const useInfiniteGoods = () => {
+const useInfiniteGoods = (enabled: boolean = true) => {
 	const defaultPageParam = { order: 0, goodsKeywords: new Set() };
 
 	const goodsApi = async ({ order, goodsKeywords }: TGoodsApiParams) => {
@@ -44,6 +44,7 @@ const useInfiniteGoods = () => {
 			{
 				retry: 2,
 				refetchOnWindowFocus: false,
+				enabled,
 				getNextPageParam: ({ order, newGoodsKeywords }) => {
 					return { order: order + 1, goodsKeywords: newGoodsKeywords };
 				},
