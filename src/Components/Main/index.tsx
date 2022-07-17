@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext, useRef, ReactElement } from 'react';
 
 import { FiltersContext, TFilterOption } from 'Context/FiltersContext';
-import useInfiniteGoods, { TGoods } from 'Hooks/useGoods';
+import useInfiniteGoods, { TGoods, lastPageLength } from 'Hooks/useGoods';
 import Goods from 'Components/Goods';
 import Notification, { TNotificationProps } from './Notification';
 import { StyledMain, StyledGoodsList, StyledMainNoti } from './Main.styled';
@@ -95,9 +95,14 @@ const Main = () => {
 			{ threshold: 0.5 }
 		);
 		const target = bottomRef.current;
+		const isLastPage = goodsDataListPages?.length === lastPageLength;
 
 		if (target) bottomObserver.observe(target);
 		if (isError) bottomObserver.disconnect();
+		if (isLastPage) {
+			bottomObserver.disconnect();
+			showNoti({ mention: LAST_PAGE_RESULT });
+		}
 
 		if (isError && !goodsDataListPages) {
 			showNoti({ mention: ERROR_RESULT, icon: 'warning' });

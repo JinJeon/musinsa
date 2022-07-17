@@ -21,6 +21,8 @@ type TGoodsApiParams = {
 	goodsKeywords: Set<string>;
 };
 
+const lastPageLength = 4;
+
 const useInfiniteGoods = (enabled: boolean = true) => {
 	const defaultPageParam = { order: 0, goodsKeywords: new Set() };
 
@@ -63,4 +65,5 @@ const useInfiniteGoods = (enabled: boolean = true) => {
 };
 
 export default useInfiniteGoods;
+export { lastPageLength };
 export type { TGoods };
