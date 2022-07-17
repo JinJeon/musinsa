@@ -9,7 +9,10 @@ type TNotificationProps = {
 
 const Notification = ({ mention, icon }: TNotificationProps) => {
 	const notification = mention ? (
-		[icon && icons[icon], mention]
+		<>
+			{icon && icons[icon]}
+			{mention}
+		</>
 	) : (
 		<LoadingAnimation color="grey7" size={50} border={6} />
 	);
