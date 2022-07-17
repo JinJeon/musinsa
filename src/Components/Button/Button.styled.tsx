@@ -44,6 +44,7 @@ const StyledButton = styled.button<TStyledButtonProps>`
 		`}
 
 		${!isActive &&
+		!isSelected &&
 		css`
 			:hover {
 				border-color: ${colors.black};
