@@ -2,7 +2,11 @@ import React, { useContext, useState } from 'react';
 
 import { FiltersDispatchContext } from 'Context/FiltersContext';
 import icons from 'static/icons';
-import { StyledSearchBarForm, StyledSearchBar } from './SearchBar.styled';
+import {
+	StyledSearchBarForm,
+	StyledSearchBar,
+	StyledSearchBtn,
+} from './SearchBar.styled';
 
 const SEARCH_GOODS = '상품명 검색';
 const { search } = icons;
@@ -26,7 +30,7 @@ const SearchBar = () => {
 
 	return (
 		<StyledSearchBarForm onSubmit={handleSubmitSearchBar}>
-			{search}
+			<StyledSearchBtn type="submit">{search}</StyledSearchBtn>
 			<StyledSearchBar
 				value={inputValue}
 				placeholder={SEARCH_GOODS}
