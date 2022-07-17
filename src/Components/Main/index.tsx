@@ -3,7 +3,7 @@ import { useEffect, useState, useContext, useRef, ReactElement } from 'react';
 import { FiltersContext, TFilterOption } from 'Context/FiltersContext';
 import useInfiniteGoods, { TGoods, lastPageLength } from 'Hooks/useGoods';
 import Goods from 'Components/Goods';
-import Notification, { TNotificationProps } from './Notification';
+import Notification, { TNotificationProps } from 'Components/Notification';
 import { StyledMain, StyledGoodsList, StyledMainNoti } from './Main.styled';
 
 type TFilterDataParams = {
@@ -94,7 +94,8 @@ const Main = () => {
 
 	useEffect(() => {
 		const isLastPage = goodsDataListPages?.length === lastPageLength;
-		if (isLastPage) return showNoti({ mention: LAST_PAGE_RESULT });
+		if (isLastPage && !!mainContent.length && !isError)
+			return showNoti({ mention: LAST_PAGE_RESULT });
 
 		const bottomObserver = new IntersectionObserver(
 			([entry]) => {
