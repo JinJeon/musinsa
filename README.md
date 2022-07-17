@@ -43,3 +43,8 @@ npm run start
 - **Styled Component**: React에서 컴포넌트의 스타일을 적용하고, 테마를 통해 스타일의 일관성을 유지하기 위해 사용했습니다.
 - **React Context ∙ Reducer**: 서버와 무관한 클라이언트의 상태 관리를 위해 사용했으며, 필터의 상태를 관리합니다.
 - **React Qeury**: 서버로 부터 데이터를 제공받는 상태를 관리하기 위해 사용했으며, 상품 목록의 상태 및 페이지를 관리합니다.
+
+## VIEWS
+
+![last-1.gif](img/last-1.gif)
+![last-2.gif](img/last-2.gif)
