@@ -32,6 +32,7 @@ const Main = () => {
 		useInfiniteGoods();
 	const bottomRef = useRef(null);
 	const { options } = useContext(FiltersContext);
+	const [curOrder, setCurOrder] = useState<number>();
 	const [isNoti, setIsNoti] = useState(false);
 	const [mainContent, setMainContent] = useState<ReactElement[]>([]);
 	const [notiProps, setNotiProps] = useState<TNotificationProps>({
@@ -76,8 +77,11 @@ const Main = () => {
 	useEffect(() => {
 		if (!goodsDataListPages) return;
 
-		const { goodsDataList } = goodsDataListPages[goodsDataListPages.length - 1];
+		const { goodsDataList, order } =
+			goodsDataListPages[goodsDataListPages.length - 1];
+		if (order === curOrder) return;
 
+		setCurOrder(order);
 		setGoodsList((prevGoods) => [...prevGoods, ...goodsDataList]);
 		setNewMainContent(goodsDataList);
 	}, [goodsDataListPages]);
