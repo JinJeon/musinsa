@@ -56,13 +56,12 @@ const Main = () => {
 	const setNewMainContent = () => {
 		if (!goodsDataListPages) return;
 
-		const goodsDataList: TGoods[] = [];
+		const filteredList: TGoods[] = [];
 		goodsDataListPages.forEach((page) =>
-			page.goodsDataList.forEach((data) => goodsDataList.push(data))
-		);
-
-		const filteredList = goodsDataList.filter((goodsData) =>
-			filterData({ goodsData, options, words })
+			page.goodsDataList.forEach((goodsData) => {
+				if (!filterData({ goodsData, options, words })) return;
+				filteredList.push(goodsData);
+			})
 		);
 
 		if (!filteredList.length) {
