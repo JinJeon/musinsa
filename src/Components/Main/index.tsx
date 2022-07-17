@@ -53,8 +53,8 @@ const Main = () => {
 		setIsNoti(true);
 	};
 
-	const setNewMainContent = () => {
-		if (!goodsDataListPages) return;
+	const getFilteredList = () => {
+		if (!goodsDataListPages) return [];
 
 		const filteredList: TGoods[] = [];
 		goodsDataListPages.forEach((page) =>
@@ -64,14 +64,18 @@ const Main = () => {
 			})
 		);
 
-		if (!filteredList.length) {
+		return filteredList;
+	};
+
+	const setNewMainContent = (list: TGoods[]) => {
+		if (!list.length) {
 			setMainContent([]);
 			showNoti({ mention: EMPTY_RESULT, icon: 'warning' });
 			return;
 		}
 
 		let key = 0; // 상품 번호가 중복되는 제품들에 대한 키값 처리
-		const newGoodsList = filteredList.map((goodsData, index, array) => {
+		const newGoodsList = list.map((goodsData, index, array) => {
 			key += 1;
 			const goodsKey = goodsData.goodsNo + key;
 			const lastRef = !array[index + 1] ? bottomRef : null;
@@ -84,10 +88,14 @@ const Main = () => {
 	};
 
 	useEffect(() => {
-		setNewMainContent();
+		const filteredList = getFilteredList();
+		setNewMainContent(filteredList);
 	}, [goodsDataListPages, options, words]);
 
 	useEffect(() => {
+		const isLastPage = goodsDataListPages?.length === lastPageLength;
+		if (isLastPage) return showNoti({ mention: LAST_PAGE_RESULT });
+
 		const bottomObserver = new IntersectionObserver(
 			([entry]) => {
 				if (entry.isIntersecting) fetchNextPage();
@@ -95,27 +103,17 @@ const Main = () => {
 			{ threshold: 0.5 }
 		);
 		const target = bottomRef.current;
-		const isLastPage = goodsDataListPages?.length === lastPageLength;
 
 		if (target) bottomObserver.observe(target);
 		if (isError) bottomObserver.disconnect();
-		if (isLastPage) {
-			bottomObserver.disconnect();
-			showNoti({ mention: LAST_PAGE_RESULT });
-		}
-
-		if (isError && !goodsDataListPages) {
-			showNoti({ mention: ERROR_RESULT, icon: 'warning' });
-		}
-		if (isError && goodsDataListPages) {
-			const isFilters = (!!options.size || !!words.size) && !mainContent.length;
-			const newMention = isFilters ? EMPTY_RESULT : LAST_PAGE_RESULT;
-			const newIcon = isFilters ? 'warning' : undefined;
-			showNoti({ mention: newMention, icon: newIcon });
-		}
 
 		return () => bottomObserver.disconnect();
 	}, [mainContent, isError]);
+
+	useEffect(() => {
+		if (!isError || goodsDataListPages) return;
+		showNoti({ mention: ERROR_RESULT, icon: 'warning' });
+	}, [isError]);
 
 	return (
 		<StyledMain>
