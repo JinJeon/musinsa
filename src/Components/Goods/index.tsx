@@ -4,6 +4,7 @@ import emptyImg from 'static/images/empty.jpg';
 import useImage from 'Hooks/useImage';
 import { getPriceType, getDiscountedPrice } from 'Util';
 import { TGoods } from 'Hooks/useGoods';
+import LoadingAnimation from 'Components/Loading';
 import {
 	StyledGoods,
 	StyledGoodsImgWrapper,
@@ -41,7 +42,7 @@ const Goods = ({
 	},
 	lastRef,
 }: TGoodsProps) => {
-	const { isSuccess, url } = useImage({ goodsNo, imageUrl });
+	const { isSuccess, url, isFetching } = useImage({ goodsNo, imageUrl });
 	const [goodsImg, setGoodsImg] = useState(emptyImg);
 	const resultPrice = isSale
 		? getDiscountedPrice({ price, discountRate: saleRate })
@@ -61,7 +62,17 @@ const Goods = ({
 		<StyledGoods ref={lastRef}>
 			<StyledGoodsImgWrapper onClick={() => handleClickLink(linkUrl)}>
 				{isSoldOut && <StyledSoldOutLabel>{SOLD_OUT}</StyledSoldOutLabel>}
-				<StyledGoodsImg src={goodsImg} alt="goodsImg" isSoldOut={isSoldOut} />
+				{isFetching && (
+					<StyledSoldOutLabel>
+						<LoadingAnimation color="grey7" size={30} border={5} />
+					</StyledSoldOutLabel>
+				)}
+				<StyledGoodsImg
+					src={goodsImg}
+					alt="goodsImg"
+					isSoldOut={isSoldOut}
+					isFetching={isFetching}
+				/>
 			</StyledGoodsImgWrapper>
 			<StyledGoodsInfo>
 				{isExclusive && <StyledExclusiveLogo>{EXCLUSIVE}</StyledExclusiveLogo>}

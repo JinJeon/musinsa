@@ -27,12 +27,26 @@ export const StyledSoldOutLabel = styled.div`
 	`}
 `;
 
-export const StyledGoodsImg = styled.img<{ isSoldOut: boolean }>`
-	${({ isSoldOut }) =>
-		isSoldOut &&
+export const StyledGoodsImg = styled.img<{
+	isSoldOut: boolean;
+	isFetching: boolean;
+}>`
+	opacity: 0;
+
+	${({ isSoldOut, isFetching }) => css`
+		${!isFetching &&
+		css`
+			opacity: 1;
+			transition: all 1s ease-out;
+		`}
+
+		${isSoldOut &&
+		!isFetching &&
 		css`
 			opacity: 0.3;
+			transition: all 1s ease-out;
 		`}
+	`}
 
 	width: 100%;
 	aspect-ratio: 5 / 6;
