@@ -18,6 +18,7 @@ const useImage = ({ goodsNo, imageUrl }: TUseImageParams) => {
 		isError,
 		isSuccess,
 		data: imageData,
+		isFetching,
 	} = useQuery(['image', goodsNo], goodsApi, {
 		retry: 2,
 		refetchOnWindowFocus: false,
@@ -25,7 +26,7 @@ const useImage = ({ goodsNo, imageUrl }: TUseImageParams) => {
 
 	const url = window.URL.createObjectURL(new Blob([imageData]));
 
-	return { imageData, isError, isSuccess, url };
+	return { imageData, isError, isSuccess, url, isFetching };
 };
 
 export default useImage;
