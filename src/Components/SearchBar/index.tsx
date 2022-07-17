@@ -10,10 +10,15 @@ import {
 	StyledSearchBtn,
 } from './SearchBar.styled';
 
-type TCheckIsKeyword = {
+type TGetWordIncludingParams = {
 	keywords: Set<string>;
 	word: string;
 };
+
+type TGetWordIncluding = ({
+	keywords,
+	word,
+}: TGetWordIncludingParams) => string | undefined;
 
 const SEARCH_GOODS = '상품명 검색';
 const { search } = icons;
@@ -29,7 +34,7 @@ const checkIsAllKorean = (word: string) => {
 	return englishWord;
 };
 
-const checkIsWordIncluded = ({ keywords, word }: TCheckIsKeyword) => {
+const getWordIncluding: TGetWordIncluding = ({ keywords, word }) => {
 	const wordCheckedIsKorean = checkIsAllKorean(word);
 	const comparedWord = wordCheckedIsKorean || word;
 	const keywordsValues = keywords.values();
@@ -41,6 +46,11 @@ const checkIsWordIncluded = ({ keywords, word }: TCheckIsKeyword) => {
 		isWordIncluded = targetValue.includes(comparedWord);
 		if (isWordIncluded) wordIncluding = targetValue;
 		targetValue = keywordsValues.next().value;
+	}
+
+	// 길이가 긴 문자일 경우, 첫 번째 단어에 대치되는 키워드까지 검색
+	if (!wordIncluding && word.length !== 1) {
+		wordIncluding = getWordIncluding({ keywords, word: word[0] });
 	}
 
 	return wordIncluding;
@@ -58,7 +68,7 @@ const SearchBar = () => {
 		const keywords = goodsDataListPages?.at(-1)?.newGoodsKeywords;
 		if (!keywords) return;
 
-		const wordIncluding = checkIsWordIncluded({ keywords, word: inputValue });
+		const wordIncluding = getWordIncluding({ keywords, word: inputValue });
 		if (!wordIncluding) return;
 
 		filtersDispatch({ type: 'ADD_WORD', content: wordIncluding });
