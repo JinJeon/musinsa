@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext, useRef, ReactElement } from 'react';
 
 import { FiltersContext, TFilterOption } from 'Context/FiltersContext';
-import useInfiniteGoods, { TGoods } from 'Hooks/useGoods';
+import useInfiniteGoods, { TGoods, lastPageLength } from 'Hooks/useGoods';
 import Goods from 'Components/Goods';
 import Notification, { TNotificationProps } from './Notification';
 import { StyledMain, StyledGoodsList, StyledMainNoti } from './Main.styled';
@@ -9,21 +9,29 @@ import { StyledMain, StyledGoodsList, StyledMainNoti } from './Main.styled';
 type TFilterDataParams = {
 	goodsData: TGoods;
 	options: Set<TFilterOption>;
+	words: Set<string>;
 };
 
 const EMPTY_RESULT = '검색 결과가 없습니다';
 const ERROR_RESULT = '상품을 불러오지 못했습니다';
 const LAST_PAGE_RESULT = '불러올 상품이 없습니다';
 
-const filterData = ({ goodsData, options }: TFilterDataParams) => {
-	const isOptions = !!options.size;
+const filterData = ({ goodsData, options, words }: TFilterDataParams) => {
+	const isFilters = !!options.size || !!words.size;
 	let isFiltered = !goodsData.isSoldOut || options.has('includeSoldOut');
-	if (!isOptions) return isFiltered;
+	if (!isFilters) return isFiltered;
 
 	options.forEach((option) => {
 		if (option === 'includeSoldOut') return;
 		isFiltered = isFiltered && goodsData[option];
 	});
+
+	words.forEach((word) => {
+		const { brandName, goodsName } = goodsData;
+		const isIncludeWord = brandName.includes(word) || goodsName.includes(word);
+		isFiltered = isFiltered && isIncludeWord;
+	});
+
 	return isFiltered;
 };
 
@@ -31,14 +39,13 @@ const Main = () => {
 	const { goodsDataListPages, fetchNextPage, isError, isFetching } =
 		useInfiniteGoods();
 	const bottomRef = useRef(null);
-	const { options } = useContext(FiltersContext);
+	const { options, words } = useContext(FiltersContext);
 	const [isNoti, setIsNoti] = useState(false);
 	const [mainContent, setMainContent] = useState<ReactElement[]>([]);
 	const [notiProps, setNotiProps] = useState<TNotificationProps>({
 		mention: undefined,
 		icon: undefined,
 	});
-	const [goodsList, setGoodsList] = useState<TGoods[]>([]);
 	const { mention, icon } = notiProps;
 
 	const showNoti = (showedNotiProps: TNotificationProps) => {
@@ -46,19 +53,29 @@ const Main = () => {
 		setIsNoti(true);
 	};
 
-	const setNewMainContent = (list: TGoods[], isFiltering: boolean = false) => {
-		const filteredList = list.filter((goodsData) =>
-			filterData({ goodsData, options })
+	const getFilteredList = () => {
+		if (!goodsDataListPages) return [];
+
+		const filteredList: TGoods[] = [];
+		goodsDataListPages.forEach((page) =>
+			page.goodsDataList.forEach((goodsData) => {
+				if (!filterData({ goodsData, options, words })) return;
+				filteredList.push(goodsData);
+			})
 		);
 
-		if (!filteredList.length) {
+		return filteredList;
+	};
+
+	const setNewMainContent = (list: TGoods[]) => {
+		if (!list.length) {
 			setMainContent([]);
 			showNoti({ mention: EMPTY_RESULT, icon: 'warning' });
 			return;
 		}
 
 		let key = 0; // 상품 번호가 중복되는 제품들에 대한 키값 처리
-		const newGoodsList = filteredList.map((goodsData, index, array) => {
+		const newGoodsList = list.map((goodsData, index, array) => {
 			key += 1;
 			const goodsKey = goodsData.goodsNo + key;
 			const lastRef = !array[index + 1] ? bottomRef : null;
@@ -67,26 +84,18 @@ const Main = () => {
 		});
 
 		setIsNoti(false);
-		setMainContent((prevContent) => {
-			const prevList = isFiltering ? [] : prevContent;
-			return [...prevList, ...newGoodsList];
-		});
+		setMainContent(newGoodsList);
 	};
 
 	useEffect(() => {
-		if (!goodsDataListPages) return;
-
-		const { goodsDataList } = goodsDataListPages[goodsDataListPages.length - 1];
-
-		setGoodsList((prevGoods) => [...prevGoods, ...goodsDataList]);
-		setNewMainContent(goodsDataList);
-	}, [goodsDataListPages]);
+		const filteredList = getFilteredList();
+		setNewMainContent(filteredList);
+	}, [goodsDataListPages, options, words]);
 
 	useEffect(() => {
-		if (goodsDataListPages) setNewMainContent(goodsList, true);
-	}, [options]);
+		const isLastPage = goodsDataListPages?.length === lastPageLength;
+		if (isLastPage) return showNoti({ mention: LAST_PAGE_RESULT });
 
-	useEffect(() => {
 		const bottomObserver = new IntersectionObserver(
 			([entry]) => {
 				if (entry.isIntersecting) fetchNextPage();
@@ -98,13 +107,13 @@ const Main = () => {
 		if (target) bottomObserver.observe(target);
 		if (isError) bottomObserver.disconnect();
 
-		if (isError && goodsDataListPages) showNoti({ mention: LAST_PAGE_RESULT });
-		if (isError && !goodsDataListPages) {
-			showNoti({ mention: ERROR_RESULT, icon: 'warning' });
-		}
-
 		return () => bottomObserver.disconnect();
 	}, [mainContent, isError]);
+
+	useEffect(() => {
+		if (!isError || goodsDataListPages) return;
+		showNoti({ mention: ERROR_RESULT, icon: 'warning' });
+	}, [isError]);
 
 	return (
 		<StyledMain>

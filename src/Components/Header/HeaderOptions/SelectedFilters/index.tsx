@@ -1,16 +1,22 @@
 import { useContext } from 'react';
 
 import { FiltersContext, FiltersDispatchContext } from 'Context/FiltersContext';
+import icons from 'static/icons';
 import Button from 'Components/Button';
-import StyledSelectedFilterBtns from './SelectedFilterBtns.styled';
+import {
+	StyledSelectedFilters,
+	StyledSelectedFilterBtns,
+	StyledResetFilterBtn,
+} from './SelectedFilters.styled';
 
 const filterOptionsContents = {
 	isSale: '세일상품',
 	isExclusive: '단독상품',
 	includeSoldOut: '품절포함',
 };
+const { reset } = icons;
 
-const SelectedFilterBtns = () => {
+const SelectedFilters = () => {
 	const { options, words } = useContext(FiltersContext);
 	const filtersDispatch = useContext(FiltersDispatchContext);
 
@@ -40,7 +46,18 @@ const SelectedFilterBtns = () => {
 
 	const selectedFilters = [...seletedFilterOptions, ...seletedFilterWords];
 
-	return <StyledSelectedFilterBtns>{selectedFilters}</StyledSelectedFilterBtns>;
+	const handleClickResetBtn = () => {
+		filtersDispatch({ type: 'RESET', content: undefined });
+	};
+
+	return (
+		<StyledSelectedFilters>
+			<StyledSelectedFilterBtns>{selectedFilters}</StyledSelectedFilterBtns>
+			<StyledResetFilterBtn onClick={handleClickResetBtn}>
+				{reset}
+			</StyledResetFilterBtn>
+		</StyledSelectedFilters>
+	);
 };
 
-export default SelectedFilterBtns;
+export default SelectedFilters;

@@ -9,6 +9,9 @@ type TGetDiscountedPriceParams = {
 };
 
 const UNIT = '원';
+const englishTyping = 'rRseEfaqQtTdwWczxvgkoiOjpuPhynbml';
+const koreanTyping =
+	'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎㅏㅐㅑㅒㅓㅔㅕㅖㅗㅛㅜㅠㅡㅣ';
 
 const getPriceType = ({ price, isUnit }: TGetPriceTypeParams) => {
 	const unit = isUnit ? UNIT : '';
@@ -25,4 +28,4 @@ const getDiscountedPrice = ({
 	return discountedPrice;
 };
 
-export { getPriceType, getDiscountedPrice };
+export { getPriceType, getDiscountedPrice, englishTyping, koreanTyping };

@@ -42,3 +42,7 @@ export const StyledSearchBar = styled.input`
 		}
 	`}
 `;
+
+export const StyledSearchBtn = styled.button`
+	display: flex;
+`;

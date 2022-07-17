@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useQuery } from 'react-query';
+import { useInfiniteQuery } from 'react-query';
 import axios from 'axios';
 
 type TGoods = {
@@ -16,25 +16,54 @@ type TGoods = {
 	isExclusive: boolean;
 };
 
-const useInfiniteGoods = () => {
-	const goodsApi = async (order: number) => {
+type TGoodsApiParams = {
+	order: number;
+	goodsKeywords: Set<string>;
+};
+
+const lastPageLength = 4;
+
+const useInfiniteGoods = (enabled: boolean = true) => {
+	const defaultPageParam = { order: 0, goodsKeywords: new Set() };
+
+	const goodsApi = async ({ order, goodsKeywords }: TGoodsApiParams) => {
 		const baseURL = `https://static.msscdn.net/musinsaUI/homework/data/goods${order}.json`;
 		const client = axios.create({ baseURL });
 		const { data } = await client.get('');
 		const goodsDataList: TGoods[] = data?.data.list;
-		return { goodsDataList, order };
+		const newGoodsKeywords = new Set(goodsKeywords);
+		goodsDataList.forEach(({ brandName, goodsName }) => {
+			brandName.split(' ').forEach((word) => newGoodsKeywords.add(word));
+			goodsName.split(' ').forEach((word) => newGoodsKeywords.add(word));
+		});
+		return { goodsDataList, order, newGoodsKeywords };
 	};
 
 	const { data, isSuccess, fetchNextPage, isError, isFetching } =
-		useInfiniteQuery('goods', ({ pageParam = 0 }) => goodsApi(pageParam), {
-			getNextPageParam: ({ order }) => order + 1,
-			retry: 2,
-			refetchOnWindowFocus: false,
-		});
+		useInfiniteQuery(
+			'goods',
+			({ pageParam = defaultPageParam }) => goodsApi(pageParam),
+			{
+				retry: 2,
+				refetchOnWindowFocus: false,
+				enabled,
+				getNextPageParam: ({ order, newGoodsKeywords }) => {
+					return { order: order + 1, goodsKeywords: newGoodsKeywords };
+				},
+			}
+		);
+
 	const goodsDataListPages = data?.pages;
 
-	return { goodsDataListPages, isSuccess, isError, fetchNextPage, isFetching };
+	return {
+		goodsDataListPages,
+		isSuccess,
+		isError,
+		fetchNextPage,
+		isFetching,
+	};
 };
 
 export default useInfiniteGoods;
+export { lastPageLength };
 export type { TGoods };

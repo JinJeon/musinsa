@@ -8,7 +8,7 @@ import {
 } from 'Context/FiltersContext';
 import SearchBar from 'Components/SearchBar';
 import Button, { TButtonPropsInfo } from 'Components/Button';
-import SelectedFilterBtns from './SelectedFilterBtns';
+import SelectedFilters from './SelectedFilters';
 import { StyledHeaderOptions, StyledFilterBtns } from './HeaderOptions.styled';
 
 type TFilterButtonInfo = {
@@ -47,6 +47,7 @@ const HeaderOptions = () => {
 		<Button
 			key={id}
 			info={{ content }}
+			isSelected={options.has(option)}
 			clickHandler={() => handleClickFilterButton(option)}
 		/>
 	));
@@ -62,7 +63,7 @@ const HeaderOptions = () => {
 				{filterBtns}
 			</StyledFilterBtns>
 			{isSearching && <SearchBar />}
-			{isFilters && <SelectedFilterBtns />}
+			{isFilters && <SelectedFilters />}
 		</StyledHeaderOptions>
 	);
 };
