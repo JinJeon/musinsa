@@ -33,18 +33,20 @@ export const StyledGoodsImg = styled.img<{
 }>`
 	opacity: 0;
 
-	${({ isSoldOut }) =>
-		isSoldOut &&
-		css`
-			opacity: 0.3;
-		`}
-
-	${({ isFetching }) =>
-		!isFetching &&
+	${({ isSoldOut, isFetching }) => css`
+		${!isFetching &&
 		css`
 			opacity: 1;
 			transition: all 1s ease-out;
 		`}
+
+		${isSoldOut &&
+		!isFetching &&
+		css`
+			opacity: 0.3;
+			transition: all 1s ease-out;
+		`}
+	`}
 
 	width: 100%;
 	aspect-ratio: 5 / 6;
